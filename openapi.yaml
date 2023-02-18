@@ -1,0 +1,578 @@
+swagger: "2.0"
+info:
+  description: "This is the (unofficial) CircleCI V2 API for managing CircleCI resources."
+  version: "1.0.0"
+  title: "CircleCI V2 API"
+host: "circleci.com"
+basePath: "/api/v2"
+schemes:
+- "https"
+securityDefinitions:
+  api_token:
+    type: "apiKey"
+    name: "Circle-Token"
+    in: "header"
+security:
+  - api_token: []
+
+paths:
+  /project/{project-slug}/schedule:
+    post:
+      tags:
+      - "schedule"
+      summary: "Create a schedule"
+      description: ""
+      operationId: "addSchedule"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "project-slug"
+        in: "path"
+        description: |
+          Project slug in the form vcs-slug/org-name/repo-name.
+          The / characters may be URL-escaped.
+          Example: gh/CircleCI-Public/api-preview-docs
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "Schedule information (payload)"
+        required: true
+        schema:
+          $ref: "#/definitions/SchedulePayload"
+      responses:
+        "201":
+          description: "Successfully added"
+          schema:
+            $ref: "#/definitions/ScheduleInfo"
+        "400":
+          description: "Invalid input"
+          schema:
+            $ref: "#/definitions/Errored"
+    get:
+      tags:
+      - "schedule"
+      summary: "List schedules"
+      description: "Returns all schedules for this project."
+      operationId: "ListSchedules"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"      
+      parameters:
+      - name: "project-slug"
+        in: "path"
+        description: |
+          Project slug in the form vcs-slug/org-name/repo-name.
+          The / characters may be URL-escaped.
+          Example: gh/CircleCI-Public/api-preview-docs
+        required: true
+        type: "string"
+      - name: "page-token"
+        in: "query"
+        description: "A token to retrieve the next page of results."
+        required: true
+        type: "string"
+        default: "project"
+      responses:
+        "200":
+          description: "A sequence of schedules"
+          schema:
+            $ref: "#/definitions/SchedulesInfo"
+        "400":
+          description: "Invalid input"
+          schema:
+            $ref: "#/definitions/Errored"
+  /schedule/{id}:
+    get:
+      tags:
+      - "schedule"
+      summary: "Get a schedule"
+      description: "Get a schedule by ID."
+      operationId: "GetSchedule"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"      
+      parameters:
+      - name: "id"
+        in: "path"
+        type: "string"
+        format: "uuid"
+        required: true
+        description: "The unique ID of the schedule."
+      responses:
+        "200":
+          description: "A schedule object"
+          schema:
+            $ref: "#/definitions/ScheduleInfo"
+        "400":
+          description: "Invalid input"
+          schema:
+            $ref: "#/definitions/Errored"
+    patch:
+      tags:
+      - "schedule"
+      summary: "Update a schedule"
+      description: "Updates a schedule and returns the updatd schedule."
+      operationId: "UpdateSchedule"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"      
+      parameters:
+      - name: "id"
+        in: "path"
+        type: "string"
+        format: "uuid"
+        required: true
+        description: "The unique ID of the schedule."
+      - in: "body"
+        name: "body"
+        description: "Schedule information (payload)"
+        required: true
+        schema:
+          $ref: "#/definitions/SchedulePayload"
+      responses:
+        "200":
+          description: "A schedule object"
+          schema:
+            $ref: "#/definitions/ScheduleInfo"
+        "400":
+          description: "Invalid input"
+          schema:
+            $ref: "#/definitions/Errored"
+    delete:
+      tags:
+      - "schedule"
+      summary: "Delete a schedule"
+      description: "Delete a schedule by ID."
+      operationId: "DeleteSchedule"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"      
+      parameters:
+      - name: "id"
+        in: "path"
+        type: "string"
+        format: "uuid"
+        required: true
+        description: "The unique ID of the schedule."
+      responses:
+        "200":
+          description: ""
+          schema:
+            $ref: "#/definitions/Deleted"
+        "400":
+          description: "Invalid input"
+          schema:
+            $ref: "#/definitions/Errored"
+  /webhook:
+    post:
+      tags:
+      - "webhook"
+      summary: "Add a new webhook"
+      description: ""
+      operationId: "addWebhook"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Webhook information (payload)"
+        required: true
+        schema:
+          $ref: "#/definitions/WebhookPayloadForRequest"
+      responses:
+        "201":
+          description: "Successfully added"
+          schema:
+            $ref: "#/definitions/WebhookInfo"
+        "400":
+          description: "Invalid input"
+          schema:
+            $ref: "#/definitions/Errored"
+    get:
+      tags:
+      - "webhook"
+      summary: "List webhooks"
+      description: "Get a list of webhook that match the given scope-type and scope-id"
+      operationId: "listWebhooks"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"      
+      parameters:
+      - name: "scope-id"
+        in: "query"
+        description: "ID of the scope being used (at the moment, only project ID is supported)"
+        required: true
+        type: "string"
+        format: "uuid"
+      - name: "scope-type"
+        in: "query"
+        description: "Type of the scope being used"
+        required: true
+        type: "string"
+        default: "project"
+      responses:
+        "200":
+          description: "A list of webhooks"
+          schema:
+            $ref: "#/definitions/WebhooksInfo"
+        "400":
+          description: "Invalid input"
+          schema:
+            $ref: "#/definitions/Errored"
+  /webhook/{id}:
+    get:
+      tags:
+      - "webhook"
+      summary: "Get a webhook"
+      description: "Get a webhook by id"
+      operationId: "GetWebhook"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"      
+      parameters:
+      - name: "id"
+        in: "path"
+        type: "string"
+        format: "uuid"
+        required: true
+        description: "ID of the webhook"
+      responses:
+        "200":
+          description: "A webhook"
+          schema:
+            $ref: "#/definitions/WebhookInfo"
+        "400":
+          description: "Invalid input"
+          schema:
+            $ref: "#/definitions/Errored"
+    put:
+      tags:
+      - "webhook"
+      summary: "Update a webhook"
+      description: ""
+      operationId: "UpdateWebhook"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"      
+      parameters:
+      - name: "id"
+        in: "path"
+        type: "string"
+        format: "uuid"
+        required: true
+        description: "ID of the webhook"
+      - in: "body"
+        name: "body"
+        description: "Webhook information (payload)"
+        required: true
+        schema:
+          $ref: "#/definitions/WebhookPayloadForRequest"
+      responses:
+        "200":
+          description: "A webhook"
+          schema:
+            $ref: "#/definitions/WebhookInfo"
+        "400":
+          description: "Invalid input"
+          schema:
+            $ref: "#/definitions/Errored"
+    delete:
+      tags:
+      - "webhook"
+      summary: "Delete a webhook"
+      description: ""
+      operationId: "DeleteWebhook"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"      
+      parameters:
+      - name: "id"
+        in: "path"
+        type: "string"
+        format: "uuid"
+        required: true
+        description: "ID of the webhook"
+      responses:
+        "200":
+          description: ""
+          schema:
+            $ref: "#/definitions/Deleted"
+        "400":
+          description: "Invalid input"
+          schema:
+            $ref: "#/definitions/Errored"
+definitions:
+  WebhookBasePayload:
+    type: "object"
+    properties:
+      name:
+        type: "string"
+        description: "Name of the webhook"
+        example: "test1"
+      url:
+        type: "string"
+        format: "url"
+        description: "URL to deliver the webhook to. Note: protocol must be included as well (only https is supported)"
+        example: "https://example.com/hook"
+      events:
+        type: "array"
+        description: "Events that will trigger the webhook"
+        items:
+          type: "string"
+          enum:
+            - "workflow-completed"
+            - "job-completed"
+        example: ["workflow-completed"]
+      scope:
+        type: "object"
+        description: "The scope in which the relevant events that will trigger webhooks"
+        properties:
+          id:
+            type: "string"
+            format: "uuid"
+            description: "ID of the scope being used (at the moment, only project ID is supported)"
+            example: "c124cca6-d03e-4733-b84d-32b02347b78c"
+          type:
+            type: "string"
+            default: "project"
+            description: "Type of the scope being used"
+            example: "project"
+  WebhookPayloadForRequest:
+    allOf:
+      - $ref: '#/definitions/WebhookBasePayload'
+      - type: "object"
+        properties:
+          verify-tls:
+            type: "boolean"
+            description: "Whether to enforce TLS certificate verification when delivering the webhook"
+            example: true
+            x-nullable: true
+          signing-secret:
+            type: "string"
+            format: "secret"
+            description: "Secret used to build an HMAC hash of the payload and passed as a header in the webhook request"
+            example: "****"
+  WebhookPayloadForResponse:
+    allOf:
+      - $ref: '#/definitions/WebhookBasePayload'
+      - type: "object"
+        properties:
+          verify_tls:
+            type: "boolean"
+            description: "Whether to enforce TLS certificate verification when delivering the webhook"
+            example: true
+            x-nullable: true
+          signing_secret:
+            type: "string"
+            format: "secret"
+            description: "Secret used to build an HMAC hash of the payload and passed as a header in the webhook request"
+            example: "****"
+  WebhookInfo:
+    allOf:
+    - $ref: '#/definitions/WebhookPayloadForResponse'
+    - type: "object"
+      properties: 
+        id:
+          type: "string"
+          format: "uuid"
+          description: "The unique ID of the webhook"
+          example: "d57ecc67-7a3b-4fd9-a1b4-442d4703bb8d"
+        created_at:
+          type: "string"
+          format: "date-time"
+          description: "The date and time the webhook was created"
+          example: "2023-02-10T04:49:36.117Z"
+        updated_at:
+          type: "string"
+          format: "date-time"
+          description: "The date and time the webhook was last updated"
+          example: "2023-02-10T04:49:36.117Z"
+  WebhooksInfo:
+    type: "object"
+    properties: 
+      items:
+        type: "array"
+        items:
+          $ref: '#/definitions/WebhookInfo'  
+      next_page_token:
+        type: "string"
+        example: ""
+  HourOfADay:
+    type: integer
+    minimum: 0
+    maximum: 24
+    exclusiveMaximum: true
+  DayOfAWeek:
+    type: string
+    enum:
+      - MON
+      - TUE
+      - WED
+      - THU
+      - FRI
+      - SAT
+      - SUN
+  DayOfAMonth:
+    type: integer
+    minimum: 1
+    maximum: 31
+  Month:
+    type: string
+    enum:
+      - JAN
+      - FEB
+      - MAR
+      - APR
+      - MAY
+      - JUN
+      - JUL
+      - AUG
+      - SEP
+      - OCT
+      - NOV
+      - DEC
+  User:
+    type: object
+    required:
+      - id
+      - login
+      - name
+    properties: 
+      id:
+        type: string
+        format: "uuid"
+        description: "The unique ID of the user."
+      login:
+        type: string
+        description: "The login information for the user."
+      name:
+        type: string
+        description: "The name of the user."
+  ScheduleBaseData:
+    type: object
+    properties: 
+      name:
+        type: "string"
+        description: "Name of the schedule."
+      description:
+        type: "string"
+        format: "secret"
+        description: "Description of the schedule."
+      parameters:
+        type: "object"
+        description: "Pipeline parameters represented as key-value pairs. Must contain branch or tag."
+        properties:
+          branch:
+            type: "string"
+          tag:
+            type: "string"
+        additionalProperties:
+          type: object
+      timetable:
+        type: "object"
+        description: "Timetable that specifies when a schedule triggers."
+        required:
+          - per-hour
+          - hours-of-day
+        properties:
+          per-hour:
+            type: integer
+            minimum: 1
+            maximum: 60
+            description: "Number of times a schedule triggers per hour, value must be between 1 and 60."
+          hours-of-day:
+            type: array
+            description: "Hours in a day in which the schedule triggers."
+            items:
+              $ref: "#/definitions/HourOfADay"
+          days-of-week:
+            type: array
+            description: "Days in a week in which the schedule triggers."
+            items:
+              $ref: "#/definitions/DayOfAWeek"
+          days-of-month:
+            type: array
+            description: "Days in a month in which the schedule triggers. This is mutually exclusive with days in a week."
+            items:
+              $ref: "#/definitions/DayOfAMonth"
+          months:
+            type: array
+            description: "Months in which the schedule triggers."
+            items:
+              $ref: "#/definitions/Month"
+  SchedulePayload:
+    allOf:
+      - $ref: "#/definitions/ScheduleBaseData"
+      - type: object
+        properties: 
+          attribution-actor:
+            type: "string"
+            enum:
+              - current
+              - system
+            description: "The attribution-actor of the scheduled pipeline."
+  ScheduleInfo:
+    allOf:
+      - $ref: "#/definitions/ScheduleBaseData"
+      - type: object
+        required:
+          - id
+          - created-at
+          - updated-at
+          - actor
+          - project-slug
+        properties: 
+          id:
+            type: "string"
+            format: "uuid"
+            description: "The unique ID of the schedule."
+          created-at:
+            type: "string"
+            format: "date-time"
+            description: "The date and time the schedule was created."
+          updated-at:
+            type: "string"
+            format: "date-time"
+            description: "The date and time the schedule was last updated."
+          actor:
+            $ref: "#/definitions/User"
+          project-slug:
+            type: string
+            description: "The project-slug for the schedule."
+  SchedulesInfo:
+    type: "object"
+    properties: 
+      items:
+        type: "array"
+        items:
+          $ref: '#/definitions/ScheduleInfo'  
+      next_page_token:
+        type: "string"
+  Deleted:
+    type: "object"
+    properties: 
+      message:
+        type: "string"
+        description: "A human-readable message"
+  Errored:
+    type: "object"
+    properties: 
+      message:
+        type: "string"
+        description: "Error message" 
+externalDocs:
+  description: "Find official API document for CircleCI here"
+  url: "https://circleci.com/docs/api/v2/index.html#tag/Webhook"
