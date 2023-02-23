@@ -314,6 +314,142 @@ paths:
           description: "Invalid input"
           schema:
             $ref: "#/definitions/Errored"
+  /project/{project-slug}/envvar:
+    post:
+      tags:
+      - "project envvar"
+      summary: "Create a project environment variable"
+      description: ""
+      operationId: "addProjectEnvVar"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "project-slug"
+        in: "path"
+        description: |
+          Project slug in the form vcs-slug/org-name/repo-name.
+          The / characters may be URL-escaped.
+          Example: gh/CircleCI-Public/api-preview-docs
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "Environment variable information (payload)"
+        required: true
+        schema:
+          $ref: "#/definitions/ProjectEnvVarPayload"
+      responses:
+        "201":
+          description: "Successfully added"
+          schema:
+            $ref: "#/definitions/ProjectEnvVarInfo"
+        "400":
+          description: "Invalid input"
+          schema:
+            $ref: "#/definitions/Errored"
+    get:
+      tags:
+      - "project envvar"
+      summary: "List project environment variables"
+      description: "Returns all environment variables for this project."
+      operationId: "ListProjectEnvVars"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "project-slug"
+        in: "path"
+        description: |
+          Project slug in the form vcs-slug/org-name/repo-name.
+          The / characters may be URL-escaped.
+          Example: gh/CircleCI-Public/api-preview-docs
+        required: true
+        type: "string"
+      - name: "page-token"
+        in: "query"
+        description: "A token to retrieve the next page of results."
+        required: true
+        type: "string"
+        default: "project"
+      responses:
+        "200":
+          description: "A sequence of project environment variables"
+          schema:
+            $ref: "#/definitions/ProjectEnvVarsInfo"
+        "400":
+          description: "Invalid input"
+          schema:
+            $ref: "#/definitions/Errored"
+  /project/{project-slug}/envvar/{name}:
+    get:
+      tags:
+      - "project envvar"
+      summary: "Get project environment variable"
+      description: "Returns a environment variable for this project."
+      operationId: "GetProjectEnvVar"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "project-slug"
+        in: "path"
+        description: |
+          Project slug in the form vcs-slug/org-name/repo-name.
+          The / characters may be URL-escaped.
+          Example: gh/CircleCI-Public/api-preview-docs
+        required: true
+        type: "string"
+      - name: "name"
+        in: "path"
+        description: "The name of the environment variable."
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "A project environment variable."
+          schema:
+            $ref: "#/definitions/ProjectEnvVarInfo"
+        "400":
+          description: "Invalid input"
+          schema:
+            $ref: "#/definitions/Errored"
+    delete:
+      tags:
+      - "project envvar"
+      summary: "Delete a project environment variable"
+      description: ""
+      operationId: "DeleteProjectEnvVar"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "project-slug"
+        in: "path"
+        description: |
+          Project slug in the form vcs-slug/org-name/repo-name.
+          The / characters may be URL-escaped.
+          Example: gh/CircleCI-Public/api-preview-docs
+        required: true
+        type: "string"
+      - name: "name"
+        in: "path"
+        description: "The name of the environment variable."
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: ""
+          schema:
+            $ref: "#/definitions/Deleted"
+        "400":
+          description: "Invalid input"
+          schema:
+            $ref: "#/definitions/Errored"
 definitions:
   WebhookBasePayload:
     type: "object"
@@ -561,6 +697,31 @@ definitions:
           $ref: '#/definitions/ScheduleInfo'  
       next_page_token:
         type: "string"
+  ProjectEnvVarPayload:
+    type: "object"
+    required:
+      - name
+      - value
+    properties:
+      name:
+        type: "string"
+        description: "The name of the environment variable."
+      value:
+        type: "string"
+        description: "The value of the environment variable."
+  ProjectEnvVarInfo:
+    allOf:
+      - $ref: "#/definitions/ProjectEnvVarPayload"
+  ProjectEnvVarsInfo:
+    type: "object"
+    properties:
+      items:
+        type: "array"
+        items:
+          $ref: '#/definitions/ProjectEnvVarInfo'
+      next_page_token:
+        type: "string"
+        example: ""
   Deleted:
     type: "object"
     properties: 
