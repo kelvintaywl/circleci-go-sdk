@@ -10,6 +10,7 @@ import (
 	httptransport "github.com/go-openapi/runtime/client"
 	"github.com/go-openapi/strfmt"
 
+	"github.com/kelvintaywl/circleci-go-sdk/client/project_envvar"
 	"github.com/kelvintaywl/circleci-go-sdk/client/schedule"
 	"github.com/kelvintaywl/circleci-go-sdk/client/webhook"
 )
@@ -56,6 +57,7 @@ func New(transport runtime.ClientTransport, formats strfmt.Registry) *Circleci {
 
 	cli := new(Circleci)
 	cli.Transport = transport
+	cli.ProjectEnvvar = project_envvar.New(transport, formats)
 	cli.Schedule = schedule.New(transport, formats)
 	cli.Webhook = webhook.New(transport, formats)
 	return cli
@@ -102,6 +104,8 @@ func (cfg *TransportConfig) WithSchemes(schemes []string) *TransportConfig {
 
 // Circleci is a client for circleci
 type Circleci struct {
+	ProjectEnvvar project_envvar.ClientService
+
 	Schedule schedule.ClientService
 
 	Webhook webhook.ClientService
@@ -112,6 +116,7 @@ type Circleci struct {
 // SetTransport changes the transport on the client and all its subresources
 func (c *Circleci) SetTransport(transport runtime.ClientTransport) {
 	c.Transport = transport
+	c.ProjectEnvvar.SetTransport(transport)
 	c.Schedule.SetTransport(transport)
 	c.Webhook.SetTransport(transport)
 }

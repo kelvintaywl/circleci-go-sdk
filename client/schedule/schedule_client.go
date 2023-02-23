@@ -30,6 +30,8 @@ type ClientOption func(*runtime.ClientOperation)
 
 // ClientService is the interface for Client methods
 type ClientService interface {
+	AddSchedule(params *AddScheduleParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*AddScheduleCreated, error)
+
 	DeleteSchedule(params *DeleteScheduleParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*DeleteScheduleOK, error)
 
 	GetSchedule(params *GetScheduleParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*GetScheduleOK, error)
@@ -38,9 +40,46 @@ type ClientService interface {
 
 	UpdateSchedule(params *UpdateScheduleParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*UpdateScheduleOK, error)
 
-	AddSchedule(params *AddScheduleParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*AddScheduleCreated, error)
-
 	SetTransport(transport runtime.ClientTransport)
+}
+
+/*
+AddSchedule creates a schedule
+*/
+func (a *Client) AddSchedule(params *AddScheduleParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*AddScheduleCreated, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewAddScheduleParams()
+	}
+	op := &runtime.ClientOperation{
+		ID:                 "AddSchedule",
+		Method:             "POST",
+		PathPattern:        "/project/{project-slug}/schedule",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"https"},
+		Params:             params,
+		Reader:             &AddScheduleReader{formats: a.formats},
+		AuthInfo:           authInfo,
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
+	if err != nil {
+		return nil, err
+	}
+	success, ok := result.(*AddScheduleCreated)
+	if ok {
+		return success, nil
+	}
+	// unexpected success response
+	// safeguard: normally, absent a default response, unknown success responses return an error above: so this is a codegen issue
+	msg := fmt.Sprintf("unexpected success response for AddSchedule: API contract not enforced by server. Client expected to get an error, but got: %T", result)
+	panic(msg)
 }
 
 /*
@@ -204,45 +243,6 @@ func (a *Client) UpdateSchedule(params *UpdateScheduleParams, authInfo runtime.C
 	// unexpected success response
 	// safeguard: normally, absent a default response, unknown success responses return an error above: so this is a codegen issue
 	msg := fmt.Sprintf("unexpected success response for UpdateSchedule: API contract not enforced by server. Client expected to get an error, but got: %T", result)
-	panic(msg)
-}
-
-/*
-AddSchedule creates a schedule
-*/
-func (a *Client) AddSchedule(params *AddScheduleParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*AddScheduleCreated, error) {
-	// TODO: Validate the params before sending
-	if params == nil {
-		params = NewAddScheduleParams()
-	}
-	op := &runtime.ClientOperation{
-		ID:                 "addSchedule",
-		Method:             "POST",
-		PathPattern:        "/project/{project-slug}/schedule",
-		ProducesMediaTypes: []string{"application/json"},
-		ConsumesMediaTypes: []string{"application/json"},
-		Schemes:            []string{"https"},
-		Params:             params,
-		Reader:             &AddScheduleReader{formats: a.formats},
-		AuthInfo:           authInfo,
-		Context:            params.Context,
-		Client:             params.HTTPClient,
-	}
-	for _, opt := range opts {
-		opt(op)
-	}
-
-	result, err := a.transport.Submit(op)
-	if err != nil {
-		return nil, err
-	}
-	success, ok := result.(*AddScheduleCreated)
-	if ok {
-		return success, nil
-	}
-	// unexpected success response
-	// safeguard: normally, absent a default response, unknown success responses return an error above: so this is a codegen issue
-	msg := fmt.Sprintf("unexpected success response for addSchedule: API contract not enforced by server. Client expected to get an error, but got: %T", result)
 	panic(msg)
 }
 

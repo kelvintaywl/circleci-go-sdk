@@ -30,17 +30,56 @@ type ClientOption func(*runtime.ClientOperation)
 
 // ClientService is the interface for Client methods
 type ClientService interface {
+	AddWebhook(params *AddWebhookParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*AddWebhookCreated, error)
+
 	DeleteWebhook(params *DeleteWebhookParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*DeleteWebhookOK, error)
 
 	GetWebhook(params *GetWebhookParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*GetWebhookOK, error)
 
-	UpdateWebhook(params *UpdateWebhookParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*UpdateWebhookOK, error)
-
-	AddWebhook(params *AddWebhookParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*AddWebhookCreated, error)
-
 	ListWebhooks(params *ListWebhooksParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*ListWebhooksOK, error)
 
+	UpdateWebhook(params *UpdateWebhookParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*UpdateWebhookOK, error)
+
 	SetTransport(transport runtime.ClientTransport)
+}
+
+/*
+AddWebhook adds a new webhook
+*/
+func (a *Client) AddWebhook(params *AddWebhookParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*AddWebhookCreated, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewAddWebhookParams()
+	}
+	op := &runtime.ClientOperation{
+		ID:                 "AddWebhook",
+		Method:             "POST",
+		PathPattern:        "/webhook",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"https"},
+		Params:             params,
+		Reader:             &AddWebhookReader{formats: a.formats},
+		AuthInfo:           authInfo,
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
+	if err != nil {
+		return nil, err
+	}
+	success, ok := result.(*AddWebhookCreated)
+	if ok {
+		return success, nil
+	}
+	// unexpected success response
+	// safeguard: normally, absent a default response, unknown success responses return an error above: so this is a codegen issue
+	msg := fmt.Sprintf("unexpected success response for AddWebhook: API contract not enforced by server. Client expected to get an error, but got: %T", result)
+	panic(msg)
 }
 
 /*
@@ -124,6 +163,47 @@ func (a *Client) GetWebhook(params *GetWebhookParams, authInfo runtime.ClientAut
 }
 
 /*
+ListWebhooks lists webhooks
+
+Get a list of webhook that match the given scope-type and scope-id
+*/
+func (a *Client) ListWebhooks(params *ListWebhooksParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*ListWebhooksOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewListWebhooksParams()
+	}
+	op := &runtime.ClientOperation{
+		ID:                 "ListWebhooks",
+		Method:             "GET",
+		PathPattern:        "/webhook",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"https"},
+		Params:             params,
+		Reader:             &ListWebhooksReader{formats: a.formats},
+		AuthInfo:           authInfo,
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
+	if err != nil {
+		return nil, err
+	}
+	success, ok := result.(*ListWebhooksOK)
+	if ok {
+		return success, nil
+	}
+	// unexpected success response
+	// safeguard: normally, absent a default response, unknown success responses return an error above: so this is a codegen issue
+	msg := fmt.Sprintf("unexpected success response for ListWebhooks: API contract not enforced by server. Client expected to get an error, but got: %T", result)
+	panic(msg)
+}
+
+/*
 UpdateWebhook updates a webhook
 */
 func (a *Client) UpdateWebhook(params *UpdateWebhookParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*UpdateWebhookOK, error) {
@@ -159,86 +239,6 @@ func (a *Client) UpdateWebhook(params *UpdateWebhookParams, authInfo runtime.Cli
 	// unexpected success response
 	// safeguard: normally, absent a default response, unknown success responses return an error above: so this is a codegen issue
 	msg := fmt.Sprintf("unexpected success response for UpdateWebhook: API contract not enforced by server. Client expected to get an error, but got: %T", result)
-	panic(msg)
-}
-
-/*
-AddWebhook adds a new webhook
-*/
-func (a *Client) AddWebhook(params *AddWebhookParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*AddWebhookCreated, error) {
-	// TODO: Validate the params before sending
-	if params == nil {
-		params = NewAddWebhookParams()
-	}
-	op := &runtime.ClientOperation{
-		ID:                 "addWebhook",
-		Method:             "POST",
-		PathPattern:        "/webhook",
-		ProducesMediaTypes: []string{"application/json"},
-		ConsumesMediaTypes: []string{"application/json"},
-		Schemes:            []string{"https"},
-		Params:             params,
-		Reader:             &AddWebhookReader{formats: a.formats},
-		AuthInfo:           authInfo,
-		Context:            params.Context,
-		Client:             params.HTTPClient,
-	}
-	for _, opt := range opts {
-		opt(op)
-	}
-
-	result, err := a.transport.Submit(op)
-	if err != nil {
-		return nil, err
-	}
-	success, ok := result.(*AddWebhookCreated)
-	if ok {
-		return success, nil
-	}
-	// unexpected success response
-	// safeguard: normally, absent a default response, unknown success responses return an error above: so this is a codegen issue
-	msg := fmt.Sprintf("unexpected success response for addWebhook: API contract not enforced by server. Client expected to get an error, but got: %T", result)
-	panic(msg)
-}
-
-/*
-ListWebhooks lists webhooks
-
-Get a list of webhook that match the given scope-type and scope-id
-*/
-func (a *Client) ListWebhooks(params *ListWebhooksParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*ListWebhooksOK, error) {
-	// TODO: Validate the params before sending
-	if params == nil {
-		params = NewListWebhooksParams()
-	}
-	op := &runtime.ClientOperation{
-		ID:                 "listWebhooks",
-		Method:             "GET",
-		PathPattern:        "/webhook",
-		ProducesMediaTypes: []string{"application/json"},
-		ConsumesMediaTypes: []string{"application/json"},
-		Schemes:            []string{"https"},
-		Params:             params,
-		Reader:             &ListWebhooksReader{formats: a.formats},
-		AuthInfo:           authInfo,
-		Context:            params.Context,
-		Client:             params.HTTPClient,
-	}
-	for _, opt := range opts {
-		opt(op)
-	}
-
-	result, err := a.transport.Submit(op)
-	if err != nil {
-		return nil, err
-	}
-	success, ok := result.(*ListWebhooksOK)
-	if ok {
-		return success, nil
-	}
-	// unexpected success response
-	// safeguard: normally, absent a default response, unknown success responses return an error above: so this is a codegen issue
-	msg := fmt.Sprintf("unexpected success response for listWebhooks: API contract not enforced by server. Client expected to get an error, but got: %T", result)
 	panic(msg)
 }
 
