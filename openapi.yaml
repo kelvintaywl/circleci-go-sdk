@@ -22,7 +22,7 @@ paths:
       - "schedule"
       summary: "Create a schedule"
       description: ""
-      operationId: "addSchedule"
+      operationId: "AddSchedule"
       consumes:
       - "application/json"
       produces:
@@ -176,7 +176,7 @@ paths:
       - "webhook"
       summary: "Add a new webhook"
       description: ""
-      operationId: "addWebhook"
+      operationId: "AddWebhook"
       consumes:
       - "application/json"
       produces:
@@ -202,7 +202,7 @@ paths:
       - "webhook"
       summary: "List webhooks"
       description: "Get a list of webhook that match the given scope-type and scope-id"
-      operationId: "listWebhooks"
+      operationId: "ListWebhooks"
       consumes:
       - "application/json"
       produces:
