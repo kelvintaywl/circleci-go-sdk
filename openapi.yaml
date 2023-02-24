@@ -16,6 +16,174 @@ security:
   - api_token: []
 
 paths:
+  /project/{project-slug}:
+    get:
+      tags:
+      - "project"
+      summary: "Get a project"
+      description: ""
+      operationId: "GetProject"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "project-slug"
+        in: "path"
+        description: |
+          Project slug in the form vcs-slug/org-name/repo-name.
+          The / characters may be URL-escaped.
+          Example: gh/CircleCI-Public/api-preview-docs
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "Project information"
+          schema:
+            $ref: "#/definitions/ProjectInfo"
+        "400":
+          description: "Invalid input"
+          schema:
+            $ref: "#/definitions/Errored"
+  /project/{project-slug}/checkout-key:
+    post:
+      tags:
+      - "project"
+      - "checkout key"
+      summary: "Create a project checkout key"
+      description: ""
+      operationId: "AddProjectCheckoutKey"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "project-slug"
+        in: "path"
+        description: |
+          Project slug in the form vcs-slug/org-name/repo-name.
+          The / characters may be URL-escaped.
+          Example: gh/CircleCI-Public/api-preview-docs
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "checkout key information (payload)"
+        required: true
+        schema:
+          $ref: "#/definitions/ProjectCheckoutKeyPayload"
+      responses:
+        "201":
+          description: "Successfully added"
+          schema:
+            $ref: "#/definitions/ProjectCheckoutKeyInfo"
+        "400":
+          description: "Invalid input"
+          schema:
+            $ref: "#/definitions/Errored"
+    get:
+      tags:
+      - "project"
+      - "checkout key"
+      summary: "List checkout keys"
+      description: "Returns all checkout keys for this project."
+      operationId: "ListProjectCheckoutKeys"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"      
+      parameters:
+      - name: "project-slug"
+        in: "path"
+        description: |
+          Project slug in the form vcs-slug/org-name/repo-name.
+          The / characters may be URL-escaped.
+          Example: gh/CircleCI-Public/api-preview-docs
+        required: true
+        type: "string"
+      - name: "page-token"
+        in: "query"
+        description: "A token to retrieve the next page of results."
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "A sequence of project checkout keys"
+          schema:
+            $ref: "#/definitions/ProjectCheckoutKeysInfo"
+        "400":
+          description: "Invalid input"
+          schema:
+            $ref: "#/definitions/Errored"
+  /project/{project-slug}/checkout-key/{fingerprint}:
+    get:
+      tags:
+      - "project"
+      - "checkout key"
+      summary: "List project checkout keys"
+      description: "Returns all checkout keys for this project."
+      operationId: "GetProjectCheckoutKey"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "project-slug"
+        in: "path"
+        description: |
+          Project slug in the form vcs-slug/org-name/repo-name.
+          The / characters may be URL-escaped.
+          Example: gh/CircleCI-Public/api-preview-docs
+        required: true
+        type: "string"
+      - name: "fingerprint"
+        in: "path"
+        description: "An SSH key fingerprint"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "A project's checkout key"
+          schema:
+            $ref: "#/definitions/ProjectCheckoutKeyInfo"
+        "400":
+          description: "Invalid input"
+          schema:
+            $ref: "#/definitions/Errored"
+    delete:
+      tags:
+      - "project"
+      - "checkout key"
+      summary: "Delete a project checkout key"
+      description: ""
+      operationId: "DeleteProjectCheckoutKey"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"      
+      parameters:
+      - name: "project-slug"
+        in: "path"
+        description: |
+          Project slug in the form vcs-slug/org-name/repo-name.
+          The / characters may be URL-escaped.
+          Example: gh/CircleCI-Public/api-preview-docs
+        required: true
+        type: "string"
+      - name: "fingerprint"
+        in: "path"
+        description: "An SSH key fingerprint"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: ""
+          schema:
+            $ref: "#/definitions/Deleted"
+        "400":
+          description: "Invalid input"
+          schema:
+            $ref: "#/definitions/Errored"
   /project/{project-slug}/schedule:
     post:
       tags:
@@ -317,10 +485,11 @@ paths:
   /project/{project-slug}/envvar:
     post:
       tags:
-      - "project envvar"
+      - "project"
+      - "envvar"
       summary: "Create a project environment variable"
       description: ""
-      operationId: "addProjectEnvVar"
+      operationId: "AddProjectEnvVar"
       consumes:
       - "application/json"
       produces:
@@ -351,7 +520,8 @@ paths:
             $ref: "#/definitions/Errored"
     get:
       tags:
-      - "project envvar"
+      - "project"
+      - "envvar"
       summary: "List project environment variables"
       description: "Returns all environment variables for this project."
       operationId: "ListProjectEnvVars"
@@ -386,7 +556,8 @@ paths:
   /project/{project-slug}/envvar/{name}:
     get:
       tags:
-      - "project envvar"
+      - "project"
+      - "envvar"
       summary: "Get project environment variable"
       description: "Returns a environment variable for this project."
       operationId: "GetProjectEnvVar"
@@ -419,7 +590,8 @@ paths:
             $ref: "#/definitions/Errored"
     delete:
       tags:
-      - "project envvar"
+      - "project"
+      - "envvar"
       summary: "Delete a project environment variable"
       description: ""
       operationId: "DeleteProjectEnvVar"
@@ -451,6 +623,95 @@ paths:
           schema:
             $ref: "#/definitions/Errored"
 definitions:
+  ProjectInfo:
+    type: "object"
+    properties: 
+      slug:
+        type: "string"
+        description: "Project slug in the form vcs-slug/org-name/repo-name. The / characters may be URL-escaped."
+        example: "github/acme/foobar"
+      name:
+        type: "string"
+        description: "The name of the project"
+        example: "Foobar"
+      id:
+        type: "string"
+        format: "uuid"
+        description: "The unique identifer for the project"
+        example: "c124cca6-d03e-4733-b84d-32b02347b78c"
+      organization_name:
+        type: "string"
+        description: "The name of the organization the project belongs to"
+      organization_slug:
+        type: "string"
+        description: "The slug of the organization the project belongs to"
+      organization_id:
+        type: "string"
+        format: "uuid"
+        description: "The identifier of the organization the project belongs to"
+      vcs_info:
+        type: "object"
+        description: "Information about the VCS that hosts the project source code"
+        properties: 
+          vcs_url:
+            type: "string"
+            format: "url"
+            description: "URL to the repository hosting the project's code"
+            example: "https://github.com/acmeorg/foobar"
+          provider:
+            type: "string"
+            enum:
+              - Bitbucket
+              - GitHub
+              - CircleCI
+            description: "The VCS provider"
+          default_branch:
+            type: "string"
+            description: "Name of the default branch for the project"
+            example: "main"
+  ProjectCheckoutKeyPayload:
+    type: "object"
+    properties: 
+      type:
+        type: "string"
+        enum:
+          - "user-key"
+          - "deploy-key"
+        example: "deploy-key"
+  ProjectCheckoutKeyInfo:
+    type: "object"
+    properties: 
+      public-key:
+        type: string
+        description: "A public SSH key"
+      fingerprint:
+        type: string
+        description: "An SSH key fingerprint"
+      preferred:
+        type: boolean
+        description: "A boolean value that indicates if this key is preferred."
+        example: false
+      type:
+        type: "string"
+        enum:
+          - "github-user-key"
+          - "deploy-key"
+        example: "deploy-key"
+      created_at:
+        type: "string"
+        format: "date-time"
+        description: "The date and time the webhook was created"
+        example: "2023-02-10T04:49:36.117Z"
+  ProjectCheckoutKeysInfo:
+    type: "object"
+    properties: 
+      items:
+        type: "array"
+        items:
+          $ref: '#/definitions/ProjectCheckoutKeyInfo'  
+      next_page_token:
+        type: "string"
+        example: ""
   WebhookBasePayload:
     type: "object"
     properties:
