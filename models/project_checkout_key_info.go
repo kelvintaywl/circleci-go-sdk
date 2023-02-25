@@ -33,7 +33,7 @@ type ProjectCheckoutKeyInfo struct {
 	Preferred *bool `json:"preferred,omitempty"`
 
 	// A public SSH key
-	PublicKey string `json:"public-key,omitempty"`
+	PublicKey string `json:"public_key,omitempty"`
 
 	// type
 	// Example: deploy-key

@@ -681,7 +681,7 @@ definitions:
   ProjectCheckoutKeyInfo:
     type: "object"
     properties: 
-      public-key:
+      public_key:
         type: string
         description: "A public SSH key"
       fingerprint:
