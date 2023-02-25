@@ -29,8 +29,8 @@ type ProjectCheckoutKeyInfo struct {
 	Fingerprint string `json:"fingerprint,omitempty"`
 
 	// A boolean value that indicates if this key is preferred.
-	// Example: false
-	Preferred bool `json:"preferred,omitempty"`
+	// Example: true
+	Preferred *bool `json:"preferred,omitempty"`
 
 	// A public SSH key
 	PublicKey string `json:"public-key,omitempty"`

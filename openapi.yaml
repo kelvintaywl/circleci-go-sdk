@@ -690,7 +690,8 @@ definitions:
       preferred:
         type: boolean
         description: "A boolean value that indicates if this key is preferred."
-        example: false
+        example: true
+        x-nullable: true
       type:
         type: "string"
         enum:
