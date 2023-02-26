@@ -622,6 +622,128 @@ paths:
           description: "Invalid input"
           schema:
             $ref: "#/definitions/Errored"
+  /context:
+    post:
+      tags:
+      - "contexts"
+      summary: "Create a context"
+      description: ""
+      operationId: "AddContext"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Context information (payload)"
+        required: true
+        schema:
+          $ref: "#/definitions/ContextPayload"
+      responses:
+        "200":
+          description: "Successfully added"
+          schema:
+            $ref: "#/definitions/ContextInfo"
+        "400":
+          description: "Invalid input"
+          schema:
+            $ref: "#/definitions/Errored"
+    get:
+      tags:
+      - "contexts"
+      summary: "List contexts for an owner"
+      description: "Returns all contexts for this owner."
+      operationId: "ListContexts"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "owner-id"
+        in: "query"
+        description: "The unique ID of the owner of the context. Specify either this or owner-slug."
+        type: "string"
+        format: "uuid"
+      - name: "owner-slug"
+        in: "query"
+        description: "A string that represents an organization. Specify either this or owner-id. Cannot be used for accounts."
+        type: "string"
+      - name: "owner-type"
+        in: "query"
+        description: "The type of the owner. Defaults to `organization`. Accounts are only used as context owners in server."
+        required: true
+        type: "string"
+        enum:
+          - "account"
+          - "organization"
+        default: "organization"
+      - name: "page-token"
+        in: "query"
+        description: "A token to retrieve the next page of results"
+        type: "string"
+      responses:
+        "200":
+          description: "A list of contexts"
+          schema:
+            $ref: "#/definitions/ContextsInfo"
+        "400":
+          description: "Invalid input"
+          schema:
+            $ref: "#/definitions/Errored"
+  /context/{id}:
+    get:
+      tags:
+      - "contexts"
+      summary: "Get a context"
+      description: "Get a context by ID."
+      operationId: "GetContext"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        type: "string"
+        format: "uuid"
+        required: true
+        description: "The unique ID of the context."
+      responses:
+        "200":
+          description: "A context object"
+          schema:
+            $ref: "#/definitions/ContextInfo"
+        "400":
+          description: "Invalid input"
+          schema:
+            $ref: "#/definitions/Errored"
+    delete:
+      tags:
+      - "contexts"
+      summary: "Delete a context"
+      description: ""
+      operationId: "DeleteContext"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        type: "string"
+        format: "uuid"
+        required: true
+        description: "ID of the context"
+      responses:
+        "200":
+          description: ""
+          schema:
+            $ref: "#/definitions/Deleted"
+        "400":
+          description: "Invalid input"
+          schema:
+            $ref: "#/definitions/Errored"
 definitions:
   ProjectInfo:
     type: "object"
@@ -984,6 +1106,56 @@ definitions:
       next_page_token:
         type: "string"
         example: ""
+  ContextInfo:
+    type: "object"
+    properties:
+      id:
+        type: string
+        format: "uuid"
+        description: "The unique ID of the context."
+      name:
+        type: string
+        description: "The user-defined name of the context"
+      created_at:
+        type: "string"
+        format: "date-time"
+        description: "The date and time the context was created"
+        example: "2023-02-10T04:49:36.117Z"
+  ContextsInfo:
+    type: "object"
+    properties:
+      items:
+        type: "array"
+        items:
+          $ref: '#/definitions/ContextInfo'
+      next_page_token:
+        type: "string"
+        example: ""
+  ContextPayload:
+    type: "object"
+    required:
+      - name
+      - owner
+    properties:
+      name:
+        type: "string"
+        description: "The user-defined name of the context."
+      owner:
+        type: "object"
+        required:
+          - id
+          - type
+        properties:
+          id:
+            type: "string"
+            format: "uuid"
+            description: "The unique identifier name of the owner of the context."
+          type:
+            type: "string"
+            description: "The type of the owner. Defaults to `organization`. Accounts are only used as context owners in server."
+            enum:
+              - "account"
+              - "organization"
   Deleted:
     type: "object"
     properties: 
