@@ -34,9 +34,15 @@ type ClientService interface {
 
 	DeleteContext(params *DeleteContextParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*DeleteContextOK, error)
 
+	DeleteContextEnvVar(params *DeleteContextEnvVarParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*DeleteContextEnvVarOK, error)
+
 	GetContext(params *GetContextParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*GetContextOK, error)
 
+	ListContextEnvVars(params *ListContextEnvVarsParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*ListContextEnvVarsOK, error)
+
 	ListContexts(params *ListContextsParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*ListContextsOK, error)
+
+	UpdateContextEnvVar(params *UpdateContextEnvVarParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*UpdateContextEnvVarOK, error)
 
 	SetTransport(transport runtime.ClientTransport)
 }
@@ -120,6 +126,45 @@ func (a *Client) DeleteContext(params *DeleteContextParams, authInfo runtime.Cli
 }
 
 /*
+DeleteContextEnvVar deletes a context environment variable
+*/
+func (a *Client) DeleteContextEnvVar(params *DeleteContextEnvVarParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*DeleteContextEnvVarOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewDeleteContextEnvVarParams()
+	}
+	op := &runtime.ClientOperation{
+		ID:                 "DeleteContextEnvVar",
+		Method:             "DELETE",
+		PathPattern:        "/context/{id}/environment-variable/{name}",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"https"},
+		Params:             params,
+		Reader:             &DeleteContextEnvVarReader{formats: a.formats},
+		AuthInfo:           authInfo,
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
+	if err != nil {
+		return nil, err
+	}
+	success, ok := result.(*DeleteContextEnvVarOK)
+	if ok {
+		return success, nil
+	}
+	// unexpected success response
+	// safeguard: normally, absent a default response, unknown success responses return an error above: so this is a codegen issue
+	msg := fmt.Sprintf("unexpected success response for DeleteContextEnvVar: API contract not enforced by server. Client expected to get an error, but got: %T", result)
+	panic(msg)
+}
+
+/*
 GetContext gets a context
 
 Get a context by ID.
@@ -161,6 +206,47 @@ func (a *Client) GetContext(params *GetContextParams, authInfo runtime.ClientAut
 }
 
 /*
+ListContextEnvVars lists environment variables for a context
+
+Returns all environment variables for a context.
+*/
+func (a *Client) ListContextEnvVars(params *ListContextEnvVarsParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*ListContextEnvVarsOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewListContextEnvVarsParams()
+	}
+	op := &runtime.ClientOperation{
+		ID:                 "ListContextEnvVars",
+		Method:             "GET",
+		PathPattern:        "/context/{id}/environment-variable",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"https"},
+		Params:             params,
+		Reader:             &ListContextEnvVarsReader{formats: a.formats},
+		AuthInfo:           authInfo,
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
+	if err != nil {
+		return nil, err
+	}
+	success, ok := result.(*ListContextEnvVarsOK)
+	if ok {
+		return success, nil
+	}
+	// unexpected success response
+	// safeguard: normally, absent a default response, unknown success responses return an error above: so this is a codegen issue
+	msg := fmt.Sprintf("unexpected success response for ListContextEnvVars: API contract not enforced by server. Client expected to get an error, but got: %T", result)
+	panic(msg)
+}
+
+/*
 ListContexts lists contexts for an owner
 
 Returns all contexts for this owner.
@@ -198,6 +284,45 @@ func (a *Client) ListContexts(params *ListContextsParams, authInfo runtime.Clien
 	// unexpected success response
 	// safeguard: normally, absent a default response, unknown success responses return an error above: so this is a codegen issue
 	msg := fmt.Sprintf("unexpected success response for ListContexts: API contract not enforced by server. Client expected to get an error, but got: %T", result)
+	panic(msg)
+}
+
+/*
+UpdateContextEnvVar adds or update a context environment variable
+*/
+func (a *Client) UpdateContextEnvVar(params *UpdateContextEnvVarParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*UpdateContextEnvVarOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewUpdateContextEnvVarParams()
+	}
+	op := &runtime.ClientOperation{
+		ID:                 "UpdateContextEnvVar",
+		Method:             "PUT",
+		PathPattern:        "/context/{id}/environment-variable/{name}",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"https"},
+		Params:             params,
+		Reader:             &UpdateContextEnvVarReader{formats: a.formats},
+		AuthInfo:           authInfo,
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
+	if err != nil {
+		return nil, err
+	}
+	success, ok := result.(*UpdateContextEnvVarOK)
+	if ok {
+		return success, nil
+	}
+	// unexpected success response
+	// safeguard: normally, absent a default response, unknown success responses return an error above: so this is a codegen issue
+	msg := fmt.Sprintf("unexpected success response for UpdateContextEnvVar: API contract not enforced by server. Client expected to get an error, but got: %T", result)
 	panic(msg)
 }
 
