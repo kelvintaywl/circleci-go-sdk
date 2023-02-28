@@ -744,6 +744,109 @@ paths:
           description: "Invalid input"
           schema:
             $ref: "#/definitions/Errored"
+  /context/{id}/environment-variable:
+    get:
+      tags:
+      - "contexts"
+      - "envvar"
+      summary: "List environment variables for a context"
+      description: "Returns all environment variables for a context."
+      operationId: "ListContextEnvVars"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "ID of the context"
+        type: "string"
+        format: "uuid"
+        required: true
+      - name: "page-token"
+        in: "query"
+        description: "A token to retrieve the next page of results"
+        type: "string"
+      responses:
+        "200":
+          description: "A list of context environment variables"
+          schema:
+            $ref: "#/definitions/ContextEnvVarsInfo"
+        "400":
+          description: "Invalid input"
+          schema:
+            $ref: "#/definitions/Errored"
+  /context/{id}/environment-variable/{name}:
+    delete:
+      tags:
+      - "contexts"
+      - "envvar"
+      summary: "Delete a context environment variable"
+      description: ""
+      operationId: "DeleteContextEnvVar"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        type: "string"
+        format: "uuid"
+        required: true
+        description: "ID of the context"
+      - name: "name"
+        in: "path"
+        type: "string"
+        required: true
+        description: "The name of the environment variable"
+      responses:
+        "200":
+          description: ""
+          schema:
+            $ref: "#/definitions/Deleted"
+        "400":
+          description: "Invalid input"
+          schema:
+            $ref: "#/definitions/Errored"
+    put:
+      tags:
+      - "contexts"
+      - "envvar"
+      summary: "Add or update a context environment variable"
+      description: ""
+      operationId: "UpdateContextEnvVar"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        type: "string"
+        format: "uuid"
+        required: true
+        description: "ID of the context"
+      - name: "name"
+        in: "path"
+        type: "string"
+        required: true
+        description: "The name of the environment variable"
+      - in: "body"
+        name: "body"
+        description: "Environment variable information (payload)"
+        required: true
+        schema:
+          $ref: "#/definitions/ContextEnvVarPayload"
+      responses:
+        "200":
+          description: "The new context environment variable"
+          schema:
+            $ref: "#/definitions/ContextEnvVarInfo"
+        "400":
+          description: "Invalid input"
+          schema:
+            $ref: "#/definitions/Errored"
 definitions:
   ProjectInfo:
     type: "object"
@@ -1156,6 +1259,44 @@ definitions:
             enum:
               - "account"
               - "organization"
+  ContextEnvVarInfo:
+    type: "object"
+    properties: 
+      variable:
+        type: "string"
+        description: "The name of the environment variable"
+      created_at:
+        type: "string"
+        format: "date-time"
+        description: "The date and time the environment variable was created"
+        example: "2023-02-10T04:49:36.117Z"
+      updated_at:
+        type: "string"
+        format: "date-time"
+        description: "The date and time the environment variable was last updated"
+        example: "2023-02-10T04:49:36.117Z"
+      context_id:
+        type: "string"
+        format: "uuid"
+        description: "ID of the context"
+  ContextEnvVarsInfo:
+    type: "object"
+    properties: 
+      items:
+        type: "array"
+        items:
+          $ref: '#/definitions/ContextEnvVarInfo'  
+      next_page_token:
+        type: "string"
+        example: ""
+  ContextEnvVarPayload:
+    type: "object"
+    required:
+      - value
+    properties:
+      value:
+        type: "string"
+        description: "The value of the environment variable."
   Deleted:
     type: "object"
     properties: 
