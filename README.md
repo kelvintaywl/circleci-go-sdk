@@ -10,3 +10,13 @@ $ swagger generate client -f ./openapi.yaml -A circleci
 
 $ go mod tidy
 ```
+
+## Validating
+
+```console
+# (optional) install swagger-cli
+# see https://apitools.dev/swagger-cli/
+$ npm install -g @apidevtools/swagger-cli
+
+$ swagger-cli validate ./openapi.yaml
+```
