@@ -35,6 +35,12 @@ func (o *ListWebhooksReader) ReadResponse(response runtime.ClientResponse, consu
 			return nil, err
 		}
 		return nil, result
+	case 404:
+		result := NewListWebhooksNotFound()
+		if err := result.readResponse(response, consumer, o.formats); err != nil {
+			return nil, err
+		}
+		return nil, result
 	default:
 		return nil, runtime.NewAPIError("response status code does not match any response statuses defined for this endpoint in the swagger spec", response, response.Code())
 	}
@@ -155,6 +161,69 @@ func (o *ListWebhooksBadRequest) GetPayload() *models.Errored {
 }
 
 func (o *ListWebhooksBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+
+	o.Payload = new(models.Errored)
+
+	// response payload
+	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
+		return err
+	}
+
+	return nil
+}
+
+// NewListWebhooksNotFound creates a ListWebhooksNotFound with default headers values
+func NewListWebhooksNotFound() *ListWebhooksNotFound {
+	return &ListWebhooksNotFound{}
+}
+
+/*
+ListWebhooksNotFound describes a response with status code 404, with default header values.
+
+Not Found
+*/
+type ListWebhooksNotFound struct {
+	Payload *models.Errored
+}
+
+// IsSuccess returns true when this list webhooks not found response has a 2xx status code
+func (o *ListWebhooksNotFound) IsSuccess() bool {
+	return false
+}
+
+// IsRedirect returns true when this list webhooks not found response has a 3xx status code
+func (o *ListWebhooksNotFound) IsRedirect() bool {
+	return false
+}
+
+// IsClientError returns true when this list webhooks not found response has a 4xx status code
+func (o *ListWebhooksNotFound) IsClientError() bool {
+	return true
+}
+
+// IsServerError returns true when this list webhooks not found response has a 5xx status code
+func (o *ListWebhooksNotFound) IsServerError() bool {
+	return false
+}
+
+// IsCode returns true when this list webhooks not found response a status code equal to that given
+func (o *ListWebhooksNotFound) IsCode(code int) bool {
+	return code == 404
+}
+
+func (o *ListWebhooksNotFound) Error() string {
+	return fmt.Sprintf("[GET /webhook][%d] listWebhooksNotFound  %+v", 404, o.Payload)
+}
+
+func (o *ListWebhooksNotFound) String() string {
+	return fmt.Sprintf("[GET /webhook][%d] listWebhooksNotFound  %+v", 404, o.Payload)
+}
+
+func (o *ListWebhooksNotFound) GetPayload() *models.Errored {
+	return o.Payload
+}
+
+func (o *ListWebhooksNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	o.Payload = new(models.Errored)
 

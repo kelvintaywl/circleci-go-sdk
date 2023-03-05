@@ -35,6 +35,12 @@ func (o *GetProjectCheckoutKeyReader) ReadResponse(response runtime.ClientRespon
 			return nil, err
 		}
 		return nil, result
+	case 404:
+		result := NewGetProjectCheckoutKeyNotFound()
+		if err := result.readResponse(response, consumer, o.formats); err != nil {
+			return nil, err
+		}
+		return nil, result
 	default:
 		return nil, runtime.NewAPIError("response status code does not match any response statuses defined for this endpoint in the swagger spec", response, response.Code())
 	}
@@ -155,6 +161,69 @@ func (o *GetProjectCheckoutKeyBadRequest) GetPayload() *models.Errored {
 }
 
 func (o *GetProjectCheckoutKeyBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+
+	o.Payload = new(models.Errored)
+
+	// response payload
+	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
+		return err
+	}
+
+	return nil
+}
+
+// NewGetProjectCheckoutKeyNotFound creates a GetProjectCheckoutKeyNotFound with default headers values
+func NewGetProjectCheckoutKeyNotFound() *GetProjectCheckoutKeyNotFound {
+	return &GetProjectCheckoutKeyNotFound{}
+}
+
+/*
+GetProjectCheckoutKeyNotFound describes a response with status code 404, with default header values.
+
+Not Found
+*/
+type GetProjectCheckoutKeyNotFound struct {
+	Payload *models.Errored
+}
+
+// IsSuccess returns true when this get project checkout key not found response has a 2xx status code
+func (o *GetProjectCheckoutKeyNotFound) IsSuccess() bool {
+	return false
+}
+
+// IsRedirect returns true when this get project checkout key not found response has a 3xx status code
+func (o *GetProjectCheckoutKeyNotFound) IsRedirect() bool {
+	return false
+}
+
+// IsClientError returns true when this get project checkout key not found response has a 4xx status code
+func (o *GetProjectCheckoutKeyNotFound) IsClientError() bool {
+	return true
+}
+
+// IsServerError returns true when this get project checkout key not found response has a 5xx status code
+func (o *GetProjectCheckoutKeyNotFound) IsServerError() bool {
+	return false
+}
+
+// IsCode returns true when this get project checkout key not found response a status code equal to that given
+func (o *GetProjectCheckoutKeyNotFound) IsCode(code int) bool {
+	return code == 404
+}
+
+func (o *GetProjectCheckoutKeyNotFound) Error() string {
+	return fmt.Sprintf("[GET /project/{project-slug}/checkout-key/{fingerprint}][%d] getProjectCheckoutKeyNotFound  %+v", 404, o.Payload)
+}
+
+func (o *GetProjectCheckoutKeyNotFound) String() string {
+	return fmt.Sprintf("[GET /project/{project-slug}/checkout-key/{fingerprint}][%d] getProjectCheckoutKeyNotFound  %+v", 404, o.Payload)
+}
+
+func (o *GetProjectCheckoutKeyNotFound) GetPayload() *models.Errored {
+	return o.Payload
+}
+
+func (o *GetProjectCheckoutKeyNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	o.Payload = new(models.Errored)
 

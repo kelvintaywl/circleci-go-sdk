@@ -35,6 +35,12 @@ func (o *DeleteContextEnvVarReader) ReadResponse(response runtime.ClientResponse
 			return nil, err
 		}
 		return nil, result
+	case 404:
+		result := NewDeleteContextEnvVarNotFound()
+		if err := result.readResponse(response, consumer, o.formats); err != nil {
+			return nil, err
+		}
+		return nil, result
 	default:
 		return nil, runtime.NewAPIError("response status code does not match any response statuses defined for this endpoint in the swagger spec", response, response.Code())
 	}
@@ -155,6 +161,69 @@ func (o *DeleteContextEnvVarBadRequest) GetPayload() *models.Errored {
 }
 
 func (o *DeleteContextEnvVarBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+
+	o.Payload = new(models.Errored)
+
+	// response payload
+	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
+		return err
+	}
+
+	return nil
+}
+
+// NewDeleteContextEnvVarNotFound creates a DeleteContextEnvVarNotFound with default headers values
+func NewDeleteContextEnvVarNotFound() *DeleteContextEnvVarNotFound {
+	return &DeleteContextEnvVarNotFound{}
+}
+
+/*
+DeleteContextEnvVarNotFound describes a response with status code 404, with default header values.
+
+Not Found
+*/
+type DeleteContextEnvVarNotFound struct {
+	Payload *models.Errored
+}
+
+// IsSuccess returns true when this delete context env var not found response has a 2xx status code
+func (o *DeleteContextEnvVarNotFound) IsSuccess() bool {
+	return false
+}
+
+// IsRedirect returns true when this delete context env var not found response has a 3xx status code
+func (o *DeleteContextEnvVarNotFound) IsRedirect() bool {
+	return false
+}
+
+// IsClientError returns true when this delete context env var not found response has a 4xx status code
+func (o *DeleteContextEnvVarNotFound) IsClientError() bool {
+	return true
+}
+
+// IsServerError returns true when this delete context env var not found response has a 5xx status code
+func (o *DeleteContextEnvVarNotFound) IsServerError() bool {
+	return false
+}
+
+// IsCode returns true when this delete context env var not found response a status code equal to that given
+func (o *DeleteContextEnvVarNotFound) IsCode(code int) bool {
+	return code == 404
+}
+
+func (o *DeleteContextEnvVarNotFound) Error() string {
+	return fmt.Sprintf("[DELETE /context/{id}/environment-variable/{name}][%d] deleteContextEnvVarNotFound  %+v", 404, o.Payload)
+}
+
+func (o *DeleteContextEnvVarNotFound) String() string {
+	return fmt.Sprintf("[DELETE /context/{id}/environment-variable/{name}][%d] deleteContextEnvVarNotFound  %+v", 404, o.Payload)
+}
+
+func (o *DeleteContextEnvVarNotFound) GetPayload() *models.Errored {
+	return o.Payload
+}
+
+func (o *DeleteContextEnvVarNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	o.Payload = new(models.Errored)
 

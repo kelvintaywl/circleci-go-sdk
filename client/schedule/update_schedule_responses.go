@@ -35,6 +35,12 @@ func (o *UpdateScheduleReader) ReadResponse(response runtime.ClientResponse, con
 			return nil, err
 		}
 		return nil, result
+	case 404:
+		result := NewUpdateScheduleNotFound()
+		if err := result.readResponse(response, consumer, o.formats); err != nil {
+			return nil, err
+		}
+		return nil, result
 	default:
 		return nil, runtime.NewAPIError("response status code does not match any response statuses defined for this endpoint in the swagger spec", response, response.Code())
 	}
@@ -155,6 +161,69 @@ func (o *UpdateScheduleBadRequest) GetPayload() *models.Errored {
 }
 
 func (o *UpdateScheduleBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+
+	o.Payload = new(models.Errored)
+
+	// response payload
+	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
+		return err
+	}
+
+	return nil
+}
+
+// NewUpdateScheduleNotFound creates a UpdateScheduleNotFound with default headers values
+func NewUpdateScheduleNotFound() *UpdateScheduleNotFound {
+	return &UpdateScheduleNotFound{}
+}
+
+/*
+UpdateScheduleNotFound describes a response with status code 404, with default header values.
+
+Not Found
+*/
+type UpdateScheduleNotFound struct {
+	Payload *models.Errored
+}
+
+// IsSuccess returns true when this update schedule not found response has a 2xx status code
+func (o *UpdateScheduleNotFound) IsSuccess() bool {
+	return false
+}
+
+// IsRedirect returns true when this update schedule not found response has a 3xx status code
+func (o *UpdateScheduleNotFound) IsRedirect() bool {
+	return false
+}
+
+// IsClientError returns true when this update schedule not found response has a 4xx status code
+func (o *UpdateScheduleNotFound) IsClientError() bool {
+	return true
+}
+
+// IsServerError returns true when this update schedule not found response has a 5xx status code
+func (o *UpdateScheduleNotFound) IsServerError() bool {
+	return false
+}
+
+// IsCode returns true when this update schedule not found response a status code equal to that given
+func (o *UpdateScheduleNotFound) IsCode(code int) bool {
+	return code == 404
+}
+
+func (o *UpdateScheduleNotFound) Error() string {
+	return fmt.Sprintf("[PATCH /schedule/{id}][%d] updateScheduleNotFound  %+v", 404, o.Payload)
+}
+
+func (o *UpdateScheduleNotFound) String() string {
+	return fmt.Sprintf("[PATCH /schedule/{id}][%d] updateScheduleNotFound  %+v", 404, o.Payload)
+}
+
+func (o *UpdateScheduleNotFound) GetPayload() *models.Errored {
+	return o.Payload
+}
+
+func (o *UpdateScheduleNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	o.Payload = new(models.Errored)
 

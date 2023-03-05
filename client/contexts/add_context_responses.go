@@ -35,6 +35,12 @@ func (o *AddContextReader) ReadResponse(response runtime.ClientResponse, consume
 			return nil, err
 		}
 		return nil, result
+	case 404:
+		result := NewAddContextNotFound()
+		if err := result.readResponse(response, consumer, o.formats); err != nil {
+			return nil, err
+		}
+		return nil, result
 	default:
 		return nil, runtime.NewAPIError("response status code does not match any response statuses defined for this endpoint in the swagger spec", response, response.Code())
 	}
@@ -155,6 +161,69 @@ func (o *AddContextBadRequest) GetPayload() *models.Errored {
 }
 
 func (o *AddContextBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+
+	o.Payload = new(models.Errored)
+
+	// response payload
+	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
+		return err
+	}
+
+	return nil
+}
+
+// NewAddContextNotFound creates a AddContextNotFound with default headers values
+func NewAddContextNotFound() *AddContextNotFound {
+	return &AddContextNotFound{}
+}
+
+/*
+AddContextNotFound describes a response with status code 404, with default header values.
+
+Not Found
+*/
+type AddContextNotFound struct {
+	Payload *models.Errored
+}
+
+// IsSuccess returns true when this add context not found response has a 2xx status code
+func (o *AddContextNotFound) IsSuccess() bool {
+	return false
+}
+
+// IsRedirect returns true when this add context not found response has a 3xx status code
+func (o *AddContextNotFound) IsRedirect() bool {
+	return false
+}
+
+// IsClientError returns true when this add context not found response has a 4xx status code
+func (o *AddContextNotFound) IsClientError() bool {
+	return true
+}
+
+// IsServerError returns true when this add context not found response has a 5xx status code
+func (o *AddContextNotFound) IsServerError() bool {
+	return false
+}
+
+// IsCode returns true when this add context not found response a status code equal to that given
+func (o *AddContextNotFound) IsCode(code int) bool {
+	return code == 404
+}
+
+func (o *AddContextNotFound) Error() string {
+	return fmt.Sprintf("[POST /context][%d] addContextNotFound  %+v", 404, o.Payload)
+}
+
+func (o *AddContextNotFound) String() string {
+	return fmt.Sprintf("[POST /context][%d] addContextNotFound  %+v", 404, o.Payload)
+}
+
+func (o *AddContextNotFound) GetPayload() *models.Errored {
+	return o.Payload
+}
+
+func (o *AddContextNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	o.Payload = new(models.Errored)
 

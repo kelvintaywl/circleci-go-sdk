@@ -35,6 +35,12 @@ func (o *DeleteScheduleReader) ReadResponse(response runtime.ClientResponse, con
 			return nil, err
 		}
 		return nil, result
+	case 404:
+		result := NewDeleteScheduleNotFound()
+		if err := result.readResponse(response, consumer, o.formats); err != nil {
+			return nil, err
+		}
+		return nil, result
 	default:
 		return nil, runtime.NewAPIError("response status code does not match any response statuses defined for this endpoint in the swagger spec", response, response.Code())
 	}
@@ -155,6 +161,69 @@ func (o *DeleteScheduleBadRequest) GetPayload() *models.Errored {
 }
 
 func (o *DeleteScheduleBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+
+	o.Payload = new(models.Errored)
+
+	// response payload
+	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
+		return err
+	}
+
+	return nil
+}
+
+// NewDeleteScheduleNotFound creates a DeleteScheduleNotFound with default headers values
+func NewDeleteScheduleNotFound() *DeleteScheduleNotFound {
+	return &DeleteScheduleNotFound{}
+}
+
+/*
+DeleteScheduleNotFound describes a response with status code 404, with default header values.
+
+Not Found
+*/
+type DeleteScheduleNotFound struct {
+	Payload *models.Errored
+}
+
+// IsSuccess returns true when this delete schedule not found response has a 2xx status code
+func (o *DeleteScheduleNotFound) IsSuccess() bool {
+	return false
+}
+
+// IsRedirect returns true when this delete schedule not found response has a 3xx status code
+func (o *DeleteScheduleNotFound) IsRedirect() bool {
+	return false
+}
+
+// IsClientError returns true when this delete schedule not found response has a 4xx status code
+func (o *DeleteScheduleNotFound) IsClientError() bool {
+	return true
+}
+
+// IsServerError returns true when this delete schedule not found response has a 5xx status code
+func (o *DeleteScheduleNotFound) IsServerError() bool {
+	return false
+}
+
+// IsCode returns true when this delete schedule not found response a status code equal to that given
+func (o *DeleteScheduleNotFound) IsCode(code int) bool {
+	return code == 404
+}
+
+func (o *DeleteScheduleNotFound) Error() string {
+	return fmt.Sprintf("[DELETE /schedule/{id}][%d] deleteScheduleNotFound  %+v", 404, o.Payload)
+}
+
+func (o *DeleteScheduleNotFound) String() string {
+	return fmt.Sprintf("[DELETE /schedule/{id}][%d] deleteScheduleNotFound  %+v", 404, o.Payload)
+}
+
+func (o *DeleteScheduleNotFound) GetPayload() *models.Errored {
+	return o.Payload
+}
+
+func (o *DeleteScheduleNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	o.Payload = new(models.Errored)
 

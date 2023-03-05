@@ -35,6 +35,12 @@ func (o *DeleteWebhookReader) ReadResponse(response runtime.ClientResponse, cons
 			return nil, err
 		}
 		return nil, result
+	case 404:
+		result := NewDeleteWebhookNotFound()
+		if err := result.readResponse(response, consumer, o.formats); err != nil {
+			return nil, err
+		}
+		return nil, result
 	default:
 		return nil, runtime.NewAPIError("response status code does not match any response statuses defined for this endpoint in the swagger spec", response, response.Code())
 	}
@@ -155,6 +161,69 @@ func (o *DeleteWebhookBadRequest) GetPayload() *models.Errored {
 }
 
 func (o *DeleteWebhookBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+
+	o.Payload = new(models.Errored)
+
+	// response payload
+	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
+		return err
+	}
+
+	return nil
+}
+
+// NewDeleteWebhookNotFound creates a DeleteWebhookNotFound with default headers values
+func NewDeleteWebhookNotFound() *DeleteWebhookNotFound {
+	return &DeleteWebhookNotFound{}
+}
+
+/*
+DeleteWebhookNotFound describes a response with status code 404, with default header values.
+
+Not Found
+*/
+type DeleteWebhookNotFound struct {
+	Payload *models.Errored
+}
+
+// IsSuccess returns true when this delete webhook not found response has a 2xx status code
+func (o *DeleteWebhookNotFound) IsSuccess() bool {
+	return false
+}
+
+// IsRedirect returns true when this delete webhook not found response has a 3xx status code
+func (o *DeleteWebhookNotFound) IsRedirect() bool {
+	return false
+}
+
+// IsClientError returns true when this delete webhook not found response has a 4xx status code
+func (o *DeleteWebhookNotFound) IsClientError() bool {
+	return true
+}
+
+// IsServerError returns true when this delete webhook not found response has a 5xx status code
+func (o *DeleteWebhookNotFound) IsServerError() bool {
+	return false
+}
+
+// IsCode returns true when this delete webhook not found response a status code equal to that given
+func (o *DeleteWebhookNotFound) IsCode(code int) bool {
+	return code == 404
+}
+
+func (o *DeleteWebhookNotFound) Error() string {
+	return fmt.Sprintf("[DELETE /webhook/{id}][%d] deleteWebhookNotFound  %+v", 404, o.Payload)
+}
+
+func (o *DeleteWebhookNotFound) String() string {
+	return fmt.Sprintf("[DELETE /webhook/{id}][%d] deleteWebhookNotFound  %+v", 404, o.Payload)
+}
+
+func (o *DeleteWebhookNotFound) GetPayload() *models.Errored {
+	return o.Payload
+}
+
+func (o *DeleteWebhookNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	o.Payload = new(models.Errored)
 
