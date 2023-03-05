@@ -45,6 +45,10 @@ paths:
           description: "Invalid input"
           schema:
             $ref: "#/definitions/Errored"
+        "404":
+          description: "Not Found"
+          schema:
+            $ref: "#/definitions/Errored"
   /project/{project-slug}/checkout-key:
     post:
       tags:
@@ -81,6 +85,10 @@ paths:
           description: "Invalid input"
           schema:
             $ref: "#/definitions/Errored"
+        "404":
+          description: "Not Found"
+          schema:
+            $ref: "#/definitions/Errored"
     get:
       tags:
       - "project"
@@ -113,6 +121,10 @@ paths:
             $ref: "#/definitions/ProjectCheckoutKeysInfo"
         "400":
           description: "Invalid input"
+          schema:
+            $ref: "#/definitions/Errored"
+        "404":
+          description: "Not Found"
           schema:
             $ref: "#/definitions/Errored"
   /project/{project-slug}/checkout-key/{fingerprint}:
@@ -150,6 +162,10 @@ paths:
           description: "Invalid input"
           schema:
             $ref: "#/definitions/Errored"
+        "404":
+          description: "Not Found"
+          schema:
+            $ref: "#/definitions/Errored"
     delete:
       tags:
       - "project"
@@ -182,6 +198,10 @@ paths:
             $ref: "#/definitions/Deleted"
         "400":
           description: "Invalid input"
+          schema:
+            $ref: "#/definitions/Errored"
+        "404":
+          description: "Not Found"
           schema:
             $ref: "#/definitions/Errored"
   /project/{project-slug}/schedule:
@@ -219,6 +239,10 @@ paths:
           description: "Invalid input"
           schema:
             $ref: "#/definitions/Errored"
+        "404":
+          description: "Not Found"
+          schema:
+            $ref: "#/definitions/Errored"
     get:
       tags:
       - "schedule"
@@ -253,6 +277,10 @@ paths:
           description: "Invalid input"
           schema:
             $ref: "#/definitions/Errored"
+        "404":
+          description: "Not Found"
+          schema:
+            $ref: "#/definitions/Errored"
   /schedule/{id}:
     get:
       tags:
@@ -278,6 +306,10 @@ paths:
             $ref: "#/definitions/ScheduleInfo"
         "400":
           description: "Invalid input"
+          schema:
+            $ref: "#/definitions/Errored"
+        "404":
+          description: "Not Found"
           schema:
             $ref: "#/definitions/Errored"
     patch:
@@ -312,6 +344,10 @@ paths:
           description: "Invalid input"
           schema:
             $ref: "#/definitions/Errored"
+        "404":
+          description: "Not Found"
+          schema:
+            $ref: "#/definitions/Errored"
     delete:
       tags:
       - "schedule"
@@ -336,6 +372,10 @@ paths:
             $ref: "#/definitions/Deleted"
         "400":
           description: "Invalid input"
+          schema:
+            $ref: "#/definitions/Errored"
+        "404":
+          description: "Not Found"
           schema:
             $ref: "#/definitions/Errored"
   /webhook:
@@ -363,6 +403,10 @@ paths:
             $ref: "#/definitions/WebhookInfo"
         "400":
           description: "Invalid input"
+          schema:
+            $ref: "#/definitions/Errored"
+        "404":
+          description: "Not Found"
           schema:
             $ref: "#/definitions/Errored"
     get:
@@ -397,6 +441,10 @@ paths:
           description: "Invalid input"
           schema:
             $ref: "#/definitions/Errored"
+        "404":
+          description: "Not Found"
+          schema:
+            $ref: "#/definitions/Errored"
   /webhook/{id}:
     get:
       tags:
@@ -422,6 +470,10 @@ paths:
             $ref: "#/definitions/WebhookInfo"
         "400":
           description: "Invalid input"
+          schema:
+            $ref: "#/definitions/Errored"
+        "404":
+          description: "Not Found"
           schema:
             $ref: "#/definitions/Errored"
     put:
@@ -456,6 +508,10 @@ paths:
           description: "Invalid input"
           schema:
             $ref: "#/definitions/Errored"
+        "404":
+          description: "Not Found"
+          schema:
+            $ref: "#/definitions/Errored"
     delete:
       tags:
       - "webhook"
@@ -480,6 +536,10 @@ paths:
             $ref: "#/definitions/Deleted"
         "400":
           description: "Invalid input"
+          schema:
+            $ref: "#/definitions/Errored"
+        "404":
+          description: "Not Found"
           schema:
             $ref: "#/definitions/Errored"
   /project/{project-slug}/envvar:
@@ -518,6 +578,10 @@ paths:
           description: "Invalid input"
           schema:
             $ref: "#/definitions/Errored"
+        "404":
+          description: "Not Found"
+          schema:
+            $ref: "#/definitions/Errored"
     get:
       tags:
       - "project"
@@ -551,6 +615,10 @@ paths:
             $ref: "#/definitions/ProjectEnvVarsInfo"
         "400":
           description: "Invalid input"
+          schema:
+            $ref: "#/definitions/Errored"
+        "404":
+          description: "Not Found"
           schema:
             $ref: "#/definitions/Errored"
   /project/{project-slug}/envvar/{name}:
@@ -588,6 +656,10 @@ paths:
           description: "Invalid input"
           schema:
             $ref: "#/definitions/Errored"
+        "404":
+          description: "Not Found"
+          schema:
+            $ref: "#/definitions/Errored"
     delete:
       tags:
       - "project"
@@ -622,6 +694,10 @@ paths:
           description: "Invalid input"
           schema:
             $ref: "#/definitions/Errored"
+        "404":
+          description: "Not Found"
+          schema:
+            $ref: "#/definitions/Errored"
   /context:
     post:
       tags:
@@ -647,6 +723,10 @@ paths:
             $ref: "#/definitions/ContextInfo"
         "400":
           description: "Invalid input"
+          schema:
+            $ref: "#/definitions/Errored"
+        "404":
+          description: "Not Found"
           schema:
             $ref: "#/definitions/Errored"
     get:
@@ -691,6 +771,10 @@ paths:
           description: "Invalid input"
           schema:
             $ref: "#/definitions/Errored"
+        "404":
+          description: "Not Found"
+          schema:
+            $ref: "#/definitions/Errored"
   /context/{id}:
     get:
       tags:
@@ -718,6 +802,10 @@ paths:
           description: "Invalid input"
           schema:
             $ref: "#/definitions/Errored"
+        "404":
+          description: "Not Found"
+          schema:
+            $ref: "#/definitions/Errored"
     delete:
       tags:
       - "contexts"
@@ -742,6 +830,10 @@ paths:
             $ref: "#/definitions/Deleted"
         "400":
           description: "Invalid input"
+          schema:
+            $ref: "#/definitions/Errored"
+        "404":
+          description: "Not Found"
           schema:
             $ref: "#/definitions/Errored"
   /context/{id}/environment-variable:
@@ -776,6 +868,10 @@ paths:
           description: "Invalid input"
           schema:
             $ref: "#/definitions/Errored"
+        "404":
+          description: "Not Found"
+          schema:
+            $ref: "#/definitions/Errored"
   /context/{id}/environment-variable/{name}:
     delete:
       tags:
@@ -807,6 +903,10 @@ paths:
             $ref: "#/definitions/Deleted"
         "400":
           description: "Invalid input"
+          schema:
+            $ref: "#/definitions/Errored"
+        "404":
+          description: "Not Found"
           schema:
             $ref: "#/definitions/Errored"
     put:
@@ -845,6 +945,10 @@ paths:
             $ref: "#/definitions/ContextEnvVarInfo"
         "400":
           description: "Invalid input"
+          schema:
+            $ref: "#/definitions/Errored"
+        "404":
+          description: "Not Found"
           schema:
             $ref: "#/definitions/Errored"
 definitions:
