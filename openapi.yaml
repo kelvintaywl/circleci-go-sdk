@@ -1045,6 +1045,12 @@ paths:
         format: "uuid"
         required: true
         description: "The unique ID of the organization."
+      - in: "body"
+        name: "body"
+        description: "Claims information (payload)"
+        required: true
+        schema:
+          $ref: "#/definitions/OrgLevelClaimsPayload"
       responses:
         "200":
           description: "Claims successfully patched."
@@ -1062,7 +1068,7 @@ paths:
           description: "Server Error"
           schema:
             $ref: "#/definitions/Errored"
-  /org/{org-id}/projecct/{project-id}/oidc-custom-claims:
+  /org/{org-id}/project/{project-id}/oidc-custom-claims:
     get:
       tags:
       - "oidc"
@@ -1092,7 +1098,7 @@ paths:
         "200":
           description: "Claims successfully fetched."
           schema:
-            $ref: "#/definitions/OrgLevelClaimsInfo"
+            $ref: "#/definitions/ProjectLevelClaimsInfo"
         "400":
           description: "Invalid input"
           schema:
@@ -1139,7 +1145,7 @@ paths:
         "200":
           description: "Claims successfully deleted."
           schema:
-            $ref: "#/definitions/OrgLevelClaimsInfo"
+            $ref: "#/definitions/ProjectLevelClaimsInfo"
         "400":
           description: "Invalid input"
           schema:
@@ -1176,11 +1182,17 @@ paths:
         format: "uuid"
         required: true
         description: "The unique ID of the project."
+      - in: "body"
+        name: "body"
+        description: "Claims information (payload)"
+        required: true
+        schema:
+          $ref: "#/definitions/ProjectLevelClaimsPayload"
       responses:
         "200":
           description: "Claims successfully patched."
           schema:
-            $ref: "#/definitions/OrgLevelClaimsInfo"
+            $ref: "#/definitions/ProjectLevelClaimsInfo"
         "400":
           description: "Invalid input"
           schema:
@@ -1650,10 +1662,6 @@ definitions:
         type: "string"
         format: "uuid"
         description: "The unique ID of the organization."
-      project_id:
-        type: "string"
-        format: "uuid"
-        description: "The unique ID of the project."
       audience:
         type: "array"
         items:
@@ -1686,6 +1694,18 @@ definitions:
         items:
           type: "string"
         description: "List of audience."
+  ProjectLevelClaimsInfo:
+    allOf:
+      - $ref: '#/definitions/OrgLevelClaimsInfo'
+      - type: "object"
+        properties:
+          project_id:
+            type: "string"
+            format: "uuid"
+            description: "The unique ID of the project."
+  ProjectLevelClaimsPayload:
+    allOf:
+      - $ref: '#/definitions/OrgLevelClaimsPayload'
   Deleted:
     type: "object"
     properties: 
