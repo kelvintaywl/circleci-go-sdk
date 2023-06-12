@@ -1005,6 +1005,11 @@ paths:
         format: "uuid"
         required: true
         description: "The unique ID of the organization."
+      - name: "claims"
+        in: "query"
+        description: "Comma-separated ist of claims to delete. Valid values are ttl, audience"
+        required: true
+        type: "string"
       responses:
         "200":
           description: "Claims successfully deleted."
