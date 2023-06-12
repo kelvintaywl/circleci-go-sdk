@@ -1062,7 +1062,137 @@ paths:
           description: "Server Error"
           schema:
             $ref: "#/definitions/Errored"
-
+  /org/{org-id}/projecct/{project-id}/oidc-custom-claims:
+    get:
+      tags:
+      - "oidc"
+      - "org"
+      - "project"
+      summary: "Get project-level claims"
+      description: "Fetches project-level custom claims of OIDC identity tokens."
+      operationId: "GetProjectLevelClaims"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "org-id"
+        in: "path"
+        type: "string"
+        format: "uuid"
+        required: true
+        description: "The unique ID of the organization."
+      - name: "project-id"
+        in: "path"
+        type: "string"
+        format: "uuid"
+        required: true
+        description: "The unique ID of the project."
+      responses:
+        "200":
+          description: "Claims successfully fetched."
+          schema:
+            $ref: "#/definitions/OrgLevelClaimsInfo"
+        "400":
+          description: "Invalid input"
+          schema:
+            $ref: "#/definitions/Errored"
+        "403":
+          description: "Forbidden"
+          schema:
+            $ref: "#/definitions/Errored"
+        "500":
+          description: "Server Error"
+          schema:
+            $ref: "#/definitions/Errored"
+    delete:
+      tags:
+      - "oidc"
+      - "org"
+      - "project"
+      summary: "Delete project-level claims"
+      description: "Deletes project-level custom claims of OIDC identity tokens."
+      operationId: "DeleteProjectLevelClaims"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "org-id"
+        in: "path"
+        type: "string"
+        format: "uuid"
+        required: true
+        description: "The unique ID of the organization."
+      - name: "project-id"
+        in: "path"
+        type: "string"
+        format: "uuid"
+        required: true
+        description: "The unique ID of the project."
+      - name: "claims"
+        in: "query"
+        description: "Comma-separated ist of claims to delete. Valid values are ttl, audience"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "Claims successfully deleted."
+          schema:
+            $ref: "#/definitions/OrgLevelClaimsInfo"
+        "400":
+          description: "Invalid input"
+          schema:
+            $ref: "#/definitions/Errored"
+        "403":
+          description: "Forbidden"
+          schema:
+            $ref: "#/definitions/Errored"
+        "500":
+          description: "Server Error"
+          schema:
+            $ref: "#/definitions/Errored"
+    patch:
+      tags:
+      - "oidc"
+      - "org"
+      summary: "Patch project-level claims"
+      description: "Creates/Updates project-level custom claims of OIDC identity tokens."
+      operationId: "PatchProjectLevelClaims"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "org-id"
+        in: "path"
+        type: "string"
+        format: "uuid"
+        required: true
+        description: "The unique ID of the organization."
+      - name: "project-id"
+        in: "path"
+        type: "string"
+        format: "uuid"
+        required: true
+        description: "The unique ID of the project."
+      responses:
+        "200":
+          description: "Claims successfully patched."
+          schema:
+            $ref: "#/definitions/OrgLevelClaimsInfo"
+        "400":
+          description: "Invalid input"
+          schema:
+            $ref: "#/definitions/Errored"
+        "403":
+          description: "Forbidden"
+          schema:
+            $ref: "#/definitions/Errored"
+        "500":
+          description: "Server Error"
+          schema:
+            $ref: "#/definitions/Errored"
 definitions:
   ProjectInfo:
     type: "object"
