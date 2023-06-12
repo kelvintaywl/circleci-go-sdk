@@ -63,7 +63,7 @@ PatchProjectLevelClaimsOK describes a response with status code 200, with defaul
 Claims successfully patched.
 */
 type PatchProjectLevelClaimsOK struct {
-	Payload *models.OrgLevelClaimsInfo
+	Payload *models.ProjectLevelClaimsInfo
 }
 
 // IsSuccess returns true when this patch project level claims o k response has a 2xx status code
@@ -92,20 +92,20 @@ func (o *PatchProjectLevelClaimsOK) IsCode(code int) bool {
 }
 
 func (o *PatchProjectLevelClaimsOK) Error() string {
-	return fmt.Sprintf("[PATCH /org/{org-id}/projecct/{project-id}/oidc-custom-claims][%d] patchProjectLevelClaimsOK  %+v", 200, o.Payload)
+	return fmt.Sprintf("[PATCH /org/{org-id}/project/{project-id}/oidc-custom-claims][%d] patchProjectLevelClaimsOK  %+v", 200, o.Payload)
 }
 
 func (o *PatchProjectLevelClaimsOK) String() string {
-	return fmt.Sprintf("[PATCH /org/{org-id}/projecct/{project-id}/oidc-custom-claims][%d] patchProjectLevelClaimsOK  %+v", 200, o.Payload)
+	return fmt.Sprintf("[PATCH /org/{org-id}/project/{project-id}/oidc-custom-claims][%d] patchProjectLevelClaimsOK  %+v", 200, o.Payload)
 }
 
-func (o *PatchProjectLevelClaimsOK) GetPayload() *models.OrgLevelClaimsInfo {
+func (o *PatchProjectLevelClaimsOK) GetPayload() *models.ProjectLevelClaimsInfo {
 	return o.Payload
 }
 
 func (o *PatchProjectLevelClaimsOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.OrgLevelClaimsInfo)
+	o.Payload = new(models.ProjectLevelClaimsInfo)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
@@ -155,11 +155,11 @@ func (o *PatchProjectLevelClaimsBadRequest) IsCode(code int) bool {
 }
 
 func (o *PatchProjectLevelClaimsBadRequest) Error() string {
-	return fmt.Sprintf("[PATCH /org/{org-id}/projecct/{project-id}/oidc-custom-claims][%d] patchProjectLevelClaimsBadRequest  %+v", 400, o.Payload)
+	return fmt.Sprintf("[PATCH /org/{org-id}/project/{project-id}/oidc-custom-claims][%d] patchProjectLevelClaimsBadRequest  %+v", 400, o.Payload)
 }
 
 func (o *PatchProjectLevelClaimsBadRequest) String() string {
-	return fmt.Sprintf("[PATCH /org/{org-id}/projecct/{project-id}/oidc-custom-claims][%d] patchProjectLevelClaimsBadRequest  %+v", 400, o.Payload)
+	return fmt.Sprintf("[PATCH /org/{org-id}/project/{project-id}/oidc-custom-claims][%d] patchProjectLevelClaimsBadRequest  %+v", 400, o.Payload)
 }
 
 func (o *PatchProjectLevelClaimsBadRequest) GetPayload() *models.Errored {
@@ -218,11 +218,11 @@ func (o *PatchProjectLevelClaimsForbidden) IsCode(code int) bool {
 }
 
 func (o *PatchProjectLevelClaimsForbidden) Error() string {
-	return fmt.Sprintf("[PATCH /org/{org-id}/projecct/{project-id}/oidc-custom-claims][%d] patchProjectLevelClaimsForbidden  %+v", 403, o.Payload)
+	return fmt.Sprintf("[PATCH /org/{org-id}/project/{project-id}/oidc-custom-claims][%d] patchProjectLevelClaimsForbidden  %+v", 403, o.Payload)
 }
 
 func (o *PatchProjectLevelClaimsForbidden) String() string {
-	return fmt.Sprintf("[PATCH /org/{org-id}/projecct/{project-id}/oidc-custom-claims][%d] patchProjectLevelClaimsForbidden  %+v", 403, o.Payload)
+	return fmt.Sprintf("[PATCH /org/{org-id}/project/{project-id}/oidc-custom-claims][%d] patchProjectLevelClaimsForbidden  %+v", 403, o.Payload)
 }
 
 func (o *PatchProjectLevelClaimsForbidden) GetPayload() *models.Errored {
@@ -281,11 +281,11 @@ func (o *PatchProjectLevelClaimsInternalServerError) IsCode(code int) bool {
 }
 
 func (o *PatchProjectLevelClaimsInternalServerError) Error() string {
-	return fmt.Sprintf("[PATCH /org/{org-id}/projecct/{project-id}/oidc-custom-claims][%d] patchProjectLevelClaimsInternalServerError  %+v", 500, o.Payload)
+	return fmt.Sprintf("[PATCH /org/{org-id}/project/{project-id}/oidc-custom-claims][%d] patchProjectLevelClaimsInternalServerError  %+v", 500, o.Payload)
 }
 
 func (o *PatchProjectLevelClaimsInternalServerError) String() string {
-	return fmt.Sprintf("[PATCH /org/{org-id}/projecct/{project-id}/oidc-custom-claims][%d] patchProjectLevelClaimsInternalServerError  %+v", 500, o.Payload)
+	return fmt.Sprintf("[PATCH /org/{org-id}/project/{project-id}/oidc-custom-claims][%d] patchProjectLevelClaimsInternalServerError  %+v", 500, o.Payload)
 }
 
 func (o *PatchProjectLevelClaimsInternalServerError) GetPayload() *models.Errored {

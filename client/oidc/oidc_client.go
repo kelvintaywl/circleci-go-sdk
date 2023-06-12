@@ -99,7 +99,7 @@ func (a *Client) DeleteProjectLevelClaims(params *DeleteProjectLevelClaimsParams
 	op := &runtime.ClientOperation{
 		ID:                 "DeleteProjectLevelClaims",
 		Method:             "DELETE",
-		PathPattern:        "/org/{org-id}/projecct/{project-id}/oidc-custom-claims",
+		PathPattern:        "/org/{org-id}/project/{project-id}/oidc-custom-claims",
 		ProducesMediaTypes: []string{"application/json"},
 		ConsumesMediaTypes: []string{"application/json"},
 		Schemes:            []string{"https"},
@@ -181,7 +181,7 @@ func (a *Client) GetProjectLevelClaims(params *GetProjectLevelClaimsParams, auth
 	op := &runtime.ClientOperation{
 		ID:                 "GetProjectLevelClaims",
 		Method:             "GET",
-		PathPattern:        "/org/{org-id}/projecct/{project-id}/oidc-custom-claims",
+		PathPattern:        "/org/{org-id}/project/{project-id}/oidc-custom-claims",
 		ProducesMediaTypes: []string{"application/json"},
 		ConsumesMediaTypes: []string{"application/json"},
 		Schemes:            []string{"https"},
@@ -263,7 +263,7 @@ func (a *Client) PatchProjectLevelClaims(params *PatchProjectLevelClaimsParams, 
 	op := &runtime.ClientOperation{
 		ID:                 "PatchProjectLevelClaims",
 		Method:             "PATCH",
-		PathPattern:        "/org/{org-id}/projecct/{project-id}/oidc-custom-claims",
+		PathPattern:        "/org/{org-id}/project/{project-id}/oidc-custom-claims",
 		ProducesMediaTypes: []string{"application/json"},
 		ConsumesMediaTypes: []string{"application/json"},
 		Schemes:            []string{"https"},

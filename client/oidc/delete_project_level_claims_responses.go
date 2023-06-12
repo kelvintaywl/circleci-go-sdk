@@ -63,7 +63,7 @@ DeleteProjectLevelClaimsOK describes a response with status code 200, with defau
 Claims successfully deleted.
 */
 type DeleteProjectLevelClaimsOK struct {
-	Payload *models.OrgLevelClaimsInfo
+	Payload *models.ProjectLevelClaimsInfo
 }
 
 // IsSuccess returns true when this delete project level claims o k response has a 2xx status code
@@ -92,20 +92,20 @@ func (o *DeleteProjectLevelClaimsOK) IsCode(code int) bool {
 }
 
 func (o *DeleteProjectLevelClaimsOK) Error() string {
-	return fmt.Sprintf("[DELETE /org/{org-id}/projecct/{project-id}/oidc-custom-claims][%d] deleteProjectLevelClaimsOK  %+v", 200, o.Payload)
+	return fmt.Sprintf("[DELETE /org/{org-id}/project/{project-id}/oidc-custom-claims][%d] deleteProjectLevelClaimsOK  %+v", 200, o.Payload)
 }
 
 func (o *DeleteProjectLevelClaimsOK) String() string {
-	return fmt.Sprintf("[DELETE /org/{org-id}/projecct/{project-id}/oidc-custom-claims][%d] deleteProjectLevelClaimsOK  %+v", 200, o.Payload)
+	return fmt.Sprintf("[DELETE /org/{org-id}/project/{project-id}/oidc-custom-claims][%d] deleteProjectLevelClaimsOK  %+v", 200, o.Payload)
 }
 
-func (o *DeleteProjectLevelClaimsOK) GetPayload() *models.OrgLevelClaimsInfo {
+func (o *DeleteProjectLevelClaimsOK) GetPayload() *models.ProjectLevelClaimsInfo {
 	return o.Payload
 }
 
 func (o *DeleteProjectLevelClaimsOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.OrgLevelClaimsInfo)
+	o.Payload = new(models.ProjectLevelClaimsInfo)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
@@ -155,11 +155,11 @@ func (o *DeleteProjectLevelClaimsBadRequest) IsCode(code int) bool {
 }
 
 func (o *DeleteProjectLevelClaimsBadRequest) Error() string {
-	return fmt.Sprintf("[DELETE /org/{org-id}/projecct/{project-id}/oidc-custom-claims][%d] deleteProjectLevelClaimsBadRequest  %+v", 400, o.Payload)
+	return fmt.Sprintf("[DELETE /org/{org-id}/project/{project-id}/oidc-custom-claims][%d] deleteProjectLevelClaimsBadRequest  %+v", 400, o.Payload)
 }
 
 func (o *DeleteProjectLevelClaimsBadRequest) String() string {
-	return fmt.Sprintf("[DELETE /org/{org-id}/projecct/{project-id}/oidc-custom-claims][%d] deleteProjectLevelClaimsBadRequest  %+v", 400, o.Payload)
+	return fmt.Sprintf("[DELETE /org/{org-id}/project/{project-id}/oidc-custom-claims][%d] deleteProjectLevelClaimsBadRequest  %+v", 400, o.Payload)
 }
 
 func (o *DeleteProjectLevelClaimsBadRequest) GetPayload() *models.Errored {
@@ -218,11 +218,11 @@ func (o *DeleteProjectLevelClaimsForbidden) IsCode(code int) bool {
 }
 
 func (o *DeleteProjectLevelClaimsForbidden) Error() string {
-	return fmt.Sprintf("[DELETE /org/{org-id}/projecct/{project-id}/oidc-custom-claims][%d] deleteProjectLevelClaimsForbidden  %+v", 403, o.Payload)
+	return fmt.Sprintf("[DELETE /org/{org-id}/project/{project-id}/oidc-custom-claims][%d] deleteProjectLevelClaimsForbidden  %+v", 403, o.Payload)
 }
 
 func (o *DeleteProjectLevelClaimsForbidden) String() string {
-	return fmt.Sprintf("[DELETE /org/{org-id}/projecct/{project-id}/oidc-custom-claims][%d] deleteProjectLevelClaimsForbidden  %+v", 403, o.Payload)
+	return fmt.Sprintf("[DELETE /org/{org-id}/project/{project-id}/oidc-custom-claims][%d] deleteProjectLevelClaimsForbidden  %+v", 403, o.Payload)
 }
 
 func (o *DeleteProjectLevelClaimsForbidden) GetPayload() *models.Errored {
@@ -281,11 +281,11 @@ func (o *DeleteProjectLevelClaimsInternalServerError) IsCode(code int) bool {
 }
 
 func (o *DeleteProjectLevelClaimsInternalServerError) Error() string {
-	return fmt.Sprintf("[DELETE /org/{org-id}/projecct/{project-id}/oidc-custom-claims][%d] deleteProjectLevelClaimsInternalServerError  %+v", 500, o.Payload)
+	return fmt.Sprintf("[DELETE /org/{org-id}/project/{project-id}/oidc-custom-claims][%d] deleteProjectLevelClaimsInternalServerError  %+v", 500, o.Payload)
 }
 
 func (o *DeleteProjectLevelClaimsInternalServerError) String() string {
-	return fmt.Sprintf("[DELETE /org/{org-id}/projecct/{project-id}/oidc-custom-claims][%d] deleteProjectLevelClaimsInternalServerError  %+v", 500, o.Payload)
+	return fmt.Sprintf("[DELETE /org/{org-id}/project/{project-id}/oidc-custom-claims][%d] deleteProjectLevelClaimsInternalServerError  %+v", 500, o.Payload)
 }
 
 func (o *DeleteProjectLevelClaimsInternalServerError) GetPayload() *models.Errored {

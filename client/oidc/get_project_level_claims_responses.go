@@ -63,7 +63,7 @@ GetProjectLevelClaimsOK describes a response with status code 200, with default 
 Claims successfully fetched.
 */
 type GetProjectLevelClaimsOK struct {
-	Payload *models.OrgLevelClaimsInfo
+	Payload *models.ProjectLevelClaimsInfo
 }
 
 // IsSuccess returns true when this get project level claims o k response has a 2xx status code
@@ -92,20 +92,20 @@ func (o *GetProjectLevelClaimsOK) IsCode(code int) bool {
 }
 
 func (o *GetProjectLevelClaimsOK) Error() string {
-	return fmt.Sprintf("[GET /org/{org-id}/projecct/{project-id}/oidc-custom-claims][%d] getProjectLevelClaimsOK  %+v", 200, o.Payload)
+	return fmt.Sprintf("[GET /org/{org-id}/project/{project-id}/oidc-custom-claims][%d] getProjectLevelClaimsOK  %+v", 200, o.Payload)
 }
 
 func (o *GetProjectLevelClaimsOK) String() string {
-	return fmt.Sprintf("[GET /org/{org-id}/projecct/{project-id}/oidc-custom-claims][%d] getProjectLevelClaimsOK  %+v", 200, o.Payload)
+	return fmt.Sprintf("[GET /org/{org-id}/project/{project-id}/oidc-custom-claims][%d] getProjectLevelClaimsOK  %+v", 200, o.Payload)
 }
 
-func (o *GetProjectLevelClaimsOK) GetPayload() *models.OrgLevelClaimsInfo {
+func (o *GetProjectLevelClaimsOK) GetPayload() *models.ProjectLevelClaimsInfo {
 	return o.Payload
 }
 
 func (o *GetProjectLevelClaimsOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.OrgLevelClaimsInfo)
+	o.Payload = new(models.ProjectLevelClaimsInfo)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
@@ -155,11 +155,11 @@ func (o *GetProjectLevelClaimsBadRequest) IsCode(code int) bool {
 }
 
 func (o *GetProjectLevelClaimsBadRequest) Error() string {
-	return fmt.Sprintf("[GET /org/{org-id}/projecct/{project-id}/oidc-custom-claims][%d] getProjectLevelClaimsBadRequest  %+v", 400, o.Payload)
+	return fmt.Sprintf("[GET /org/{org-id}/project/{project-id}/oidc-custom-claims][%d] getProjectLevelClaimsBadRequest  %+v", 400, o.Payload)
 }
 
 func (o *GetProjectLevelClaimsBadRequest) String() string {
-	return fmt.Sprintf("[GET /org/{org-id}/projecct/{project-id}/oidc-custom-claims][%d] getProjectLevelClaimsBadRequest  %+v", 400, o.Payload)
+	return fmt.Sprintf("[GET /org/{org-id}/project/{project-id}/oidc-custom-claims][%d] getProjectLevelClaimsBadRequest  %+v", 400, o.Payload)
 }
 
 func (o *GetProjectLevelClaimsBadRequest) GetPayload() *models.Errored {
@@ -218,11 +218,11 @@ func (o *GetProjectLevelClaimsForbidden) IsCode(code int) bool {
 }
 
 func (o *GetProjectLevelClaimsForbidden) Error() string {
-	return fmt.Sprintf("[GET /org/{org-id}/projecct/{project-id}/oidc-custom-claims][%d] getProjectLevelClaimsForbidden  %+v", 403, o.Payload)
+	return fmt.Sprintf("[GET /org/{org-id}/project/{project-id}/oidc-custom-claims][%d] getProjectLevelClaimsForbidden  %+v", 403, o.Payload)
 }
 
 func (o *GetProjectLevelClaimsForbidden) String() string {
-	return fmt.Sprintf("[GET /org/{org-id}/projecct/{project-id}/oidc-custom-claims][%d] getProjectLevelClaimsForbidden  %+v", 403, o.Payload)
+	return fmt.Sprintf("[GET /org/{org-id}/project/{project-id}/oidc-custom-claims][%d] getProjectLevelClaimsForbidden  %+v", 403, o.Payload)
 }
 
 func (o *GetProjectLevelClaimsForbidden) GetPayload() *models.Errored {
@@ -281,11 +281,11 @@ func (o *GetProjectLevelClaimsInternalServerError) IsCode(code int) bool {
 }
 
 func (o *GetProjectLevelClaimsInternalServerError) Error() string {
-	return fmt.Sprintf("[GET /org/{org-id}/projecct/{project-id}/oidc-custom-claims][%d] getProjectLevelClaimsInternalServerError  %+v", 500, o.Payload)
+	return fmt.Sprintf("[GET /org/{org-id}/project/{project-id}/oidc-custom-claims][%d] getProjectLevelClaimsInternalServerError  %+v", 500, o.Payload)
 }
 
 func (o *GetProjectLevelClaimsInternalServerError) String() string {
-	return fmt.Sprintf("[GET /org/{org-id}/projecct/{project-id}/oidc-custom-claims][%d] getProjectLevelClaimsInternalServerError  %+v", 500, o.Payload)
+	return fmt.Sprintf("[GET /org/{org-id}/project/{project-id}/oidc-custom-claims][%d] getProjectLevelClaimsInternalServerError  %+v", 500, o.Payload)
 }
 
 func (o *GetProjectLevelClaimsInternalServerError) GetPayload() *models.Errored {

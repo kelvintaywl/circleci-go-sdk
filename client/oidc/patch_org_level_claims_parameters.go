@@ -14,6 +14,8 @@ import (
 	"github.com/go-openapi/runtime"
 	cr "github.com/go-openapi/runtime/client"
 	"github.com/go-openapi/strfmt"
+
+	"github.com/kelvintaywl/circleci-go-sdk/models"
 )
 
 // NewPatchOrgLevelClaimsParams creates a new PatchOrgLevelClaimsParams object,
@@ -60,6 +62,12 @@ PatchOrgLevelClaimsParams contains all the parameters to send to the API endpoin
 	Typically these are written to a http.Request.
 */
 type PatchOrgLevelClaimsParams struct {
+
+	/* Body.
+
+	   Claims information (payload)
+	*/
+	Body *models.OrgLevelClaimsPayload
 
 	/* OrgID.
 
@@ -122,6 +130,17 @@ func (o *PatchOrgLevelClaimsParams) SetHTTPClient(client *http.Client) {
 	o.HTTPClient = client
 }
 
+// WithBody adds the body to the patch org level claims params
+func (o *PatchOrgLevelClaimsParams) WithBody(body *models.OrgLevelClaimsPayload) *PatchOrgLevelClaimsParams {
+	o.SetBody(body)
+	return o
+}
+
+// SetBody adds the body to the patch org level claims params
+func (o *PatchOrgLevelClaimsParams) SetBody(body *models.OrgLevelClaimsPayload) {
+	o.Body = body
+}
+
 // WithOrgID adds the orgID to the patch org level claims params
 func (o *PatchOrgLevelClaimsParams) WithOrgID(orgID strfmt.UUID) *PatchOrgLevelClaimsParams {
 	o.SetOrgID(orgID)
@@ -140,6 +159,11 @@ func (o *PatchOrgLevelClaimsParams) WriteToRequest(r runtime.ClientRequest, reg 
 		return err
 	}
 	var res []error
+	if o.Body != nil {
+		if err := r.SetBodyParam(o.Body); err != nil {
+			return err
+		}
+	}
 
 	// path param org-id
 	if err := r.SetPathParam("org-id", o.OrgID.String()); err != nil {

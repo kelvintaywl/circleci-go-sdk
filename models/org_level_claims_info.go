@@ -30,10 +30,6 @@ type OrgLevelClaimsInfo struct {
 	// Format: uuid
 	OrgID strfmt.UUID `json:"org_id,omitempty"`
 
-	// The unique ID of the project.
-	// Format: uuid
-	ProjectID strfmt.UUID `json:"project_id,omitempty"`
-
 	// Time to live (JSON duration).
 	// Example: 20d
 	TTL string `json:"ttl,omitempty"`
@@ -52,10 +48,6 @@ func (m *OrgLevelClaimsInfo) Validate(formats strfmt.Registry) error {
 	}
 
 	if err := m.validateOrgID(formats); err != nil {
-		res = append(res, err)
-	}
-
-	if err := m.validateProjectID(formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -87,18 +79,6 @@ func (m *OrgLevelClaimsInfo) validateOrgID(formats strfmt.Registry) error {
 	}
 
 	if err := validate.FormatOf("org_id", "body", "uuid", m.OrgID.String(), formats); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func (m *OrgLevelClaimsInfo) validateProjectID(formats strfmt.Registry) error {
-	if swag.IsZero(m.ProjectID) { // not required
-		return nil
-	}
-
-	if err := validate.FormatOf("project_id", "body", "uuid", m.ProjectID.String(), formats); err != nil {
 		return err
 	}
 
