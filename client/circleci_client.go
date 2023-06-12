@@ -11,6 +11,7 @@ import (
 	"github.com/go-openapi/strfmt"
 
 	"github.com/kelvintaywl/circleci-go-sdk/client/contexts"
+	"github.com/kelvintaywl/circleci-go-sdk/client/oidc"
 	"github.com/kelvintaywl/circleci-go-sdk/client/project"
 	"github.com/kelvintaywl/circleci-go-sdk/client/schedule"
 	"github.com/kelvintaywl/circleci-go-sdk/client/webhook"
@@ -59,6 +60,7 @@ func New(transport runtime.ClientTransport, formats strfmt.Registry) *Circleci {
 	cli := new(Circleci)
 	cli.Transport = transport
 	cli.Contexts = contexts.New(transport, formats)
+	cli.Oidc = oidc.New(transport, formats)
 	cli.Project = project.New(transport, formats)
 	cli.Schedule = schedule.New(transport, formats)
 	cli.Webhook = webhook.New(transport, formats)
@@ -108,6 +110,8 @@ func (cfg *TransportConfig) WithSchemes(schemes []string) *TransportConfig {
 type Circleci struct {
 	Contexts contexts.ClientService
 
+	Oidc oidc.ClientService
+
 	Project project.ClientService
 
 	Schedule schedule.ClientService
@@ -121,6 +125,7 @@ type Circleci struct {
 func (c *Circleci) SetTransport(transport runtime.ClientTransport) {
 	c.Transport = transport
 	c.Contexts.SetTransport(transport)
+	c.Oidc.SetTransport(transport)
 	c.Project.SetTransport(transport)
 	c.Schedule.SetTransport(transport)
 	c.Webhook.SetTransport(transport)
