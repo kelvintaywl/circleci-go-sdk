@@ -951,6 +951,113 @@ paths:
           description: "Not Found"
           schema:
             $ref: "#/definitions/Errored"
+  /org/{org-id}/oidc-custom-claims:
+    get:
+      tags:
+      - "oidc"
+      - "org"
+      summary: "Get org-level claims"
+      description: "Fetches org-level custom claims of OIDC identity tokens."
+      operationId: "GetOrgLevelClaims"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "org-id"
+        in: "path"
+        type: "string"
+        format: "uuid"
+        required: true
+        description: "The unique ID of the organization."
+      responses:
+        "200":
+          description: "Claims successfully fetched."
+          schema:
+            $ref: "#/definitions/OrgLevelClaimsInfo"
+        "400":
+          description: "Invalid input"
+          schema:
+            $ref: "#/definitions/Errored"
+        "403":
+          description: "Forbidden"
+          schema:
+            $ref: "#/definitions/Errored"
+        "500":
+          description: "Server Error"
+          schema:
+            $ref: "#/definitions/Errored"
+    delete:
+      tags:
+      - "oidc"
+      - "org"
+      summary: "Delete org-level claims"
+      description: "Deletes org-level custom claims of OIDC identity tokens."
+      operationId: "DeleteOrgLevelClaims"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "org-id"
+        in: "path"
+        type: "string"
+        format: "uuid"
+        required: true
+        description: "The unique ID of the organization."
+      responses:
+        "200":
+          description: "Claims successfully deleted."
+          schema:
+            $ref: "#/definitions/OrgLevelClaimsInfo"
+        "400":
+          description: "Invalid input"
+          schema:
+            $ref: "#/definitions/Errored"
+        "403":
+          description: "Forbidden"
+          schema:
+            $ref: "#/definitions/Errored"
+        "500":
+          description: "Server Error"
+          schema:
+            $ref: "#/definitions/Errored"
+    patch:
+      tags:
+      - "oidc"
+      - "org"
+      summary: "Patch org-level claims"
+      description: "Creates/Updates org-level custom claims of OIDC identity tokens."
+      operationId: "PatchOrgLevelClaims"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "org-id"
+        in: "path"
+        type: "string"
+        format: "uuid"
+        required: true
+        description: "The unique ID of the organization."
+      responses:
+        "200":
+          description: "Claims successfully patched."
+          schema:
+            $ref: "#/definitions/OrgLevelClaimsInfo"
+        "400":
+          description: "Invalid input"
+          schema:
+            $ref: "#/definitions/Errored"
+        "403":
+          description: "Forbidden"
+          schema:
+            $ref: "#/definitions/Errored"
+        "500":
+          description: "Server Error"
+          schema:
+            $ref: "#/definitions/Errored"
+
 definitions:
   ProjectInfo:
     type: "object"
@@ -1401,6 +1508,49 @@ definitions:
       value:
         type: "string"
         description: "The value of the environment variable."
+  OrgLevelClaimsInfo:
+    type: "object"
+    properties:
+      org_id:
+        type: "string"
+        format: "uuid"
+        description: "The unique ID of the organization."
+      project_id:
+        type: "string"
+        format: "uuid"
+        description: "The unique ID of the project."
+      audience:
+        type: "array"
+        items:
+          type: "string"
+        description: "List of audience."
+      audience_updated_at:
+        type: "string"
+        format: "date-time"
+        description: "The date and time the audience list was updated."
+      ttl:
+        type: "string"
+        description: "Time to live (JSON duration)."
+        example: "20d"
+      ttl_updated_at:
+        type: "string"
+        format: "date-time"
+        description: "The date and time the TTL was updated."
+  OrgLevelClaimsPayload:
+    type: "object"
+    required:
+      - audience
+      - ttl
+    properties:
+      ttl:
+        type: "string"
+        description: "Time to live (JSON duration)."
+        example: "20d"
+      audience:
+        type: "array"
+        items:
+          type: "string"
+        description: "List of audience."
   Deleted:
     type: "object"
     properties: 
